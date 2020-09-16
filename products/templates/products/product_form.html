@@ -6,20 +6,57 @@
         <div class="container">
             <div class="card">
                 <div class="card-body">
+                    <h5 class="card-title">Add Product</h5>
                     <form action="" method="POST">
                         {% csrf_token %}
-                        <table>
-                            {{ form|crispy }}
-                        </table>
+                        <div class="row">
+                            <div class="col-md-4">{{ form.brand|as_crispy_field}}</div>
+                            <div class="col-md-4">{{ form.name|as_crispy_field}}</div>
+                            <div class="col-md-4">{{ form.code|as_crispy_field}}</div>
+                        </div>   
+                        <div class="row">
+                            <div class="col-md-4">{{ form.sale_price|as_crispy_field}}</div>
+                            <div class="col-md-4">{{ form.stock|as_crispy_field}}</div>
+                            <div class="col-md-4">{{ form.category|as_crispy_field}}</div>
+                        </div>   
                         <input type="submit" value="Add" class="btn btn-primary">
                     </form>
                 </div>
             </div>
             <div class="card">
                 <div class="card-body">
-                    {% for product in recent %}
-                    <p>{{ product.name }}</p>
-                    {% endfor %}
+                    <h5 class="card-title">Recently Added</h5>
+                    <div class="table-responsive mt-3">
+                    
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Code</th>
+                                    <th>Brand</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>In stock</th>
+                                    <th>Sale Price</th>
+                                </tr>
+                            </thead>
+                            {% for item in recent %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ item.code }}</td>
+                                <td>{{ item.brand }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.category }}</td>
+                                <td>{{ item.stock }}</td>
+                                <td>{{ item.sale_price }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td style="text-align: center;" colspan="6">No products added!</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                 </div>
             </div>
 

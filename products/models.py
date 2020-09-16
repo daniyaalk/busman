@@ -26,11 +26,6 @@ class Product(models.Model):
 
     class Meta:
         order_with_respect_to = 'organization'
-
-    def clean(self):
-
-        if Product.objects.filter(organization=self.organization, code=self.code).count != 0:
-            raise ValidationError(
-                {'code': "A product with this code already exists!"})
+        unique_together = [['organization','code']]
 
 
