@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.core.validators import ValidationError
-from .models import Product, Category
+from .models import Product
 
 def productform_factory(organization=None):
     
@@ -10,11 +10,6 @@ def productform_factory(organization=None):
             model = Product
             fields = ['brand', 'name', 'code', 'sale_price', 'stock', 'category']
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.fields["category"].queryset = Category.objects.filter(
-                organization=organization)
-        
         def clean(self):
             cleaned_data = self.cleaned_data
             

@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from organization.models import Organization
-from .models import Product, Category
+from .models import Product
 from .forms import productform_factory
 
 # Create your views here.
