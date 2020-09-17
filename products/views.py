@@ -5,19 +5,20 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from organization.models import Organization
 from .models import Product
 from .forms import productform_factory
+from .filters import ProductFilter
 
 # Create your views here.
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
-    paginate_by = 30
 
     def get_context_data(self):
         context = super().get_context_data()
+        context["filter"] = ProductFilter(self.request.GET, queryset=self.get_queryset())
         context["title"] = "Products"
         return context
 
     def get_queryset(self):
-        return Product.objects.filter(organization=self.request.user.organization)
+        return Product.objects.filter(organization=self.request.user.organization).order_by("-id")
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product

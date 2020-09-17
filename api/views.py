@@ -1,24 +1,31 @@
 from django.http import HttpResponseForbidden, JsonResponse
 from products.models import Product
+from .decorators import require_login
 
 # Create your views here.
+@require_login
 def home(request):
-    
-    if request.user.is_authenticated:
-        response = {"message": f"Hi, {request.user}!"}
-        return HttpResponseForbidden(JsonResponse(response), content_type="application/json")
-    else:
-        response = {"error": "Not Logged In!"}
-        return HttpResponseForbidden(JsonResponse(response), content_type="application/json")
+    response = {"message": f"Hi, {request.user}!"}
+    return JsonResponse(response)
 
-
+@require_login
 def categoryAutoComplete(request):
+    term = request.GET['term']
+    response = list(Product.objects.filter(organization=request.user.organization, category__icontains=term).values_list('category', flat=True))
+    return JsonResponse(response, safe=False)
 
-    if request.user.is_authenticated:
-        term = request.GET['term']
-        response = list(Product.objects.filter(organization=request.user.organization, category__contains=term).values_list('category', flat=True))
-        print(response)
-        return JsonResponse(response, safe=False)
-    else:
-        response = {"error": "Not Logged In!"}
-        return HttpResponseForbidden(JsonResponse(response), content_type="application/json")
+
+@require_login
+def nameAutoComplete(request):
+    term = request.GET['term']
+    response = list(Product.objects.filter(organization=request.user.organization,
+                                           name__icontains=term).values_list('name', flat=True))
+    return JsonResponse(response, safe=False)
+
+
+@require_login
+def brandAutoComplete(request):
+    term = request.GET['term']
+    response = list(Product.objects.filter(organization=request.user.organization,
+                                           brand__icontains=term).values_list('brand', flat=True))
+    return JsonResponse(response, safe=False)

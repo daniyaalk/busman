@@ -1,4 +1,5 @@
 {% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="gray-bg pt-3 pb-3">
     <div class="container">
@@ -7,8 +8,29 @@
                 <div class="card-title">
                     <h5>Products <a href="{% url 'products-add' %}" class="btn btn-outline-primary">Add</a></h5>
                 </div>
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link text-left" type="button" data-toggle="collapse"
+                                    data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    Filter List
+                                </button>
+                                <small class="text-muted float-right"><a href="{% url 'products-list' %}">Clear</a></small>
+                            </h5>
+                        </div>
+                
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <form action="" method="GET">
+                                    {{ filter.form|crispy }}
+                                    <input type="submit" value="Search" class="btn btn-primary">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive mt-3">
-
                     <table class="table table-hover">
                         <thead class="thead-dark">
                             <tr>
@@ -21,7 +43,7 @@
                                 <th>Sale Price</th>
                             </tr>
                         </thead>
-                        {% for item in object_list %}
+                        {% for item in filter.qs %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ item.code }}</td>
@@ -77,4 +99,25 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block extras %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+        integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+        crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            $("#id_category").autocomplete({
+                    source: '{% url "api-categories" %}',
+                    minLength: 1
+                })
+            $("#id_name").autocomplete({
+                    source: '{% url "api-names" %}',
+                    minLength: 1
+                })
+            $("#id_brand").autocomplete({
+                    source: '{% url "api-brands" %}',
+                    minLength: 1
+                })
+        })
+    </script>
 {% endblock %}
