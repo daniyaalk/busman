@@ -6,7 +6,11 @@
         <div class="container">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Add Product</h5>
+                    <h5 class="card-title">
+                        <small class="text-muted float-right"><a href="{{request.url}}">Reset</a></small>
+                        Add Product
+                    </h5>
+
                     <form action="" method="POST">
                         {% csrf_token %}
                         <div class="row">
@@ -23,6 +27,7 @@
                     </form>
                 </div>
             </div>
+            {% if recent %}
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Recently Added</h5>
@@ -61,6 +66,7 @@
             </div>
 
         </div>
+        {% endif %}
 
     </div>
 {% endblock %}

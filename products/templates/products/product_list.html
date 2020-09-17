@@ -41,6 +41,8 @@
                                 <th>Category</th>
                                 <th>In stock</th>
                                 <th>Sale Price</th>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
                             </tr>
                         </thead>
                         {% for item in page_obj %}
@@ -52,6 +54,8 @@
                             <td>{{ item.category }}</td>
                             <td>{{ item.stock }}</td>
                             <td>{{ item.sale_price }}</td>
+                            <td><a href="{% url 'products-edit' item.pk %}" class="btn btn-info">Edit</a></td>
+                            <td><a href="#" class="btn btn-danger">Delete</a></td>
                         </tr>
                         {% empty %}
                         <tr>

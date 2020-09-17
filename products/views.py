@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
-from django.views.generic import ListView, CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from organization.models import Organization
 from .models import Product
 from .forms import productform_factory
@@ -58,3 +58,21 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         if form.is_valid():
             form.instance.organization = self.request.user.organization
             return super().form_valid(form)
+
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Product
+    form_class = productform_factory()
+    success_url = reverse_lazy('products-list')
+
+    def get(self, request, **kwargs):
+        organization = self.request.user.organization
+        self.form_class = productform_factory(organization=organization)
+        return super().get(request)
+    
+    def post(self, request, **kwargs):
+        organization = self.request.user.organization
+        self.form_class = productform_factory(organization=organization)
+        return super().post(request)
+    
+    def test_func(self):
+        return self.request.user.organization == self.get_object().organization
