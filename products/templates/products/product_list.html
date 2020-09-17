@@ -43,9 +43,9 @@
                                 <th>Sale Price</th>
                             </tr>
                         </thead>
-                        {% for item in filter.qs %}
+                        {% for item in page_obj %}
                         <tr>
-                            <td>{{ forloop.counter }}</td>
+                            <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
                             <td>{{ item.code }}</td>
                             <td>{{ item.brand }}</td>
                             <td>{{ item.name }}</td>
