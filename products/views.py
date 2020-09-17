@@ -9,6 +9,7 @@ from .forms import productform_factory
 # Create your views here.
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
+    paginate_by = 30
 
     def get_context_data(self):
         context = super().get_context_data()
