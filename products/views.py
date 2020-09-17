@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.core.paginator import Paginator
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from organization.models import Organization
 from .models import Product
@@ -76,3 +77,14 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     
     def test_func(self):
         return self.request.user.organization == self.get_object().organization
+
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Product
+    success_url = reverse_lazy('products-list')
+
+    def test_func(self):
+        return self.request.user.organization == self.get_object().organization
+    
+    def delete(self, request, *args, **kwargs):
+        messages.add_message(request, messages.INFO, "The product was deleted successfully")
+        return super().delete(request, *args, **kwargs)
