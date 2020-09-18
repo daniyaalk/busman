@@ -4,34 +4,31 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 from organization.models import Organization
 from .models import Product
 from .forms import productform_factory
 from .filters import ProductFilter
 
 # Create your views here.
-class ProductListView(LoginRequiredMixin, ListView):
-    model = Product
+@login_required
+def productlist(request):
+    
+    organization = request.user.organization
+    products = Product.objects.filter(
+        organization=organization).order_by("-id")
+    productfilter = ProductFilter(request.GET, queryset=products)
 
-    def get_context_data(self):
-        context = super().get_context_data()
-        productfilter = ProductFilter(
-            self.request.GET, queryset=self.get_queryset())
-        context["filter"] = productfilter
-        objects = productfilter.qs
-        
-        paginate_by = 20
-        paginator = Paginator(objects, paginate_by)
-        page_number = self.request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-        context["page_obj"] = page_obj
-        context["is_paginated"] = objects.count() > paginate_by
+    paginator = Paginator(productfilter.qs, 25)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-        context["title"] = "Products"
-        return context
+    context = {
+        'page_obj': page_obj,
+        'filter': productfilter
+    }
 
-    def get_queryset(self):
-        return Product.objects.filter(organization=self.request.user.organization).order_by("-id")
+    return render(request, "products/product_list.html", context=context)
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
