@@ -11,21 +11,21 @@ def home(request):
 @require_login
 def categoryAutoComplete(request):
     term = request.GET['term']
-    response = list(Product.objects.filter(organization=request.user.organization, category__icontains=term).values_list('category', flat=True))
-    return JsonResponse(response, safe=False)
+    response = set(Product.objects.filter(organization=request.user.organization, category__icontains=term).values_list('category', flat=True).distinct())
+    return JsonResponse(list(response), safe=False)
 
 
 @require_login
 def nameAutoComplete(request):
     term = request.GET['term']
-    response = list(Product.objects.filter(organization=request.user.organization,
-                                           name__icontains=term).values_list('name', flat=True))
-    return JsonResponse(response, safe=False)
+    response = set(Product.objects.filter(organization=request.user.organization,
+                                           name__icontains=term).values_list('name', flat=True).distinct())
+    return JsonResponse(list(response), safe=False)
 
 
 @require_login
 def brandAutoComplete(request):
     term = request.GET['term']
-    response = list(Product.objects.filter(organization=request.user.organization,
-                                           brand__icontains=term).values_list('brand', flat=True))
-    return JsonResponse(response, safe=False)
+    response = set(Product.objects.filter(organization=request.user.organization,
+                                           brand__icontains=term).values_list('brand', flat=True).distinct())
+    return JsonResponse(list(response), safe=False)
