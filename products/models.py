@@ -16,4 +16,7 @@ class Product(models.Model):
         order_with_respect_to = 'organization'
         unique_together = [['organization','code']]
 
+    def __str__(self):
+        return f"{self.organization.name} / {self.name}"
+
 

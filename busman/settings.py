@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'organization.apps.OrganizationConfig',
     'products.apps.ProductsConfig',
+    'sales.apps.SalesConfig',
     'api.apps.ApiConfig',
 ]
 
