@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
@@ -44,3 +44,13 @@ class InvoiceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         invoice = self.get_object()
         return invoice.organization == self.request.user.organization
+
+class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = Invoice
+
+    def test_func(self):
+        invoice = self.get_object()
+        return invoice.organization == self.request.user.organization
+
+def addentries(request, pk):
+    return render(request, "sales/add_entries.html")

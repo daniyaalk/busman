@@ -1,0 +1,47 @@
+{% extends 'home/base.html' %}
+{% block content %}
+<div class="gray-bg pt-3 pb-3">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Invoice
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        Customer: {{ object.customer_name }}
+                    </div>
+                    <div class="col-md-6">
+                        Dated: {{ object.date }}
+                    </div>  
+                </div>
+                <hr>
+                <h5>Products:</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                        {% for entry in object.entries.all %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ entry.product.name }}</td>
+                            <td>{{ entry.product.sale_price }}</td>
+                            <td>{{ entry.quantity }}</td>
+                            <td>{{ entry.total_price|floatformat:2 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'sales-add' object.pk %}" class="btn btn-outline-primary">Add Products</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

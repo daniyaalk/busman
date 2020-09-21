@@ -44,7 +44,7 @@
                         {% for invoice in page_obj %}
                         <tr>
                             <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
-                            <td>{{ invoice.customer_name }}</td>
+                            <td><a href="{% url 'sales-view' invoice.pk %}">{{ invoice.customer_name }}</a></td>
                             <td>{{ invoice.date }}</td>
                         </tr>
                         {% empty %}
