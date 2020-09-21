@@ -1,4 +1,4 @@
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import JsonResponse
 from products.models import Product
 from .decorators import require_login
 

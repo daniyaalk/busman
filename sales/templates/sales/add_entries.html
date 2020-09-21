@@ -1,4 +1,64 @@
 {% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
-<div class="gray-bg pt-3 pb-3   "></div>
+<div class="gray-bg pt-3 pb-3">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Add Entries to invoice</h5>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" class="btn btn-primary" value="Add">
+                    <a href="{% url 'sales-view' pk %}" class="btn btn-secondary">Back</a>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Added Entries</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Brand</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in added_entries %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ entry.product.brand }}</td>
+                                <td>{{ entry.product.name }}</td>
+                                <td>{{ entry.product.sales_price }}</td>
+                                <td>{{ entry.quantity }}</td>
+                                <td>{{ entry.total_price|floatformat:2 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extras %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+        integrity="sha512-hgoywpb1bcTi1B5kKwogCTG4cvTzDmFCJZWjit4ZimDIgXu7Dwsreq8GOQjKVUxFwxCWkLcJN5EN0W0aOngs4g=="
+        crossorigin="anonymous"></script>   
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+        integrity="sha512-nATinx3+kN7dKuXEB0XLIpTd7j8QahdyJjE24jTJf4HASidUCFFN/TkSVn3CifGmWwfC2mO/VmFQ6hRn2IcAwg=="
+        crossorigin="anonymous" />
+    <script>
+        $('#id_product').selectize({
+                sortField: 'text'
+            });
+    </script>
 {% endblock %}

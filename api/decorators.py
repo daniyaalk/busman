@@ -1,4 +1,4 @@
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import HttpResponse, JsonResponse
 
 def require_login(view_func):
     
@@ -8,6 +8,6 @@ def require_login(view_func):
             return view_func(request, *args, **kwargs)
         else:
             response = {"error": "Not logged in!"}
-            return HttpResponseForbidden(JsonResponse(response), content_type="application/json")
+            return HttpResponse(JsonResponse(response), content_type="application/json", status=401)
 
     return wrapper

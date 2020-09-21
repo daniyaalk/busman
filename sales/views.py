@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
-from .models import Invoice
+from products.models import Product
+from .models import Invoice, InvoiceEntry
 from .filters import InvoiceFilter
-from .forms import InvoiceForm
+from .forms import InvoiceForm, InvoiceEntryForm
 
 # Create your views here.
 @login_required
@@ -53,4 +54,23 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return invoice.organization == self.request.user.organization
 
 def addentries(request, pk):
-    return render(request, "sales/add_entries.html")
+    
+    if request.method == "POST":
+        form = InvoiceEntryForm(request.POST)
+        form.instance.invoice = get_object_or_404(Invoice, pk=pk)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('sales-add', pk)
+    else:
+        form = InvoiceEntryForm()
+
+    form.fields["product"].queryset = Product.objects.filter(organization=request.user.organization)
+
+    added_entries = InvoiceEntry.objects.filter(invoice__pk=pk)
+    context = {
+        'pk': pk,
+        'form': form,
+        'added_entries': added_entries
+    }
+    return render(request, "sales/add_entries.html", context=context)

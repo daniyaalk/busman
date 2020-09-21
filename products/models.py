@@ -17,6 +17,6 @@ class Product(models.Model):
         unique_together = [['organization','code']]
 
     def __str__(self):
-        return f"{self.organization.name} / {self.name}"
+        return f"{self.brand} / {self.name} / Rs. {self.sale_price} / {self.stock} Remaining"
 
 

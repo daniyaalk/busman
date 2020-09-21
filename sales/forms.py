@@ -1,5 +1,5 @@
 from django import forms
-from .models import Invoice
+from .models import Invoice, InvoiceEntry
 
 class InvoiceForm(forms.ModelForm):
 
@@ -10,3 +10,9 @@ class InvoiceForm(forms.ModelForm):
     class Meta:
         model = Invoice
         exclude = ['organization']
+
+class InvoiceEntryForm(forms.ModelForm):
+
+    class Meta:
+        model = InvoiceEntry
+        exclude = ['invoice']
