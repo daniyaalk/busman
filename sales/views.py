@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView
 from django.contrib.auth.decorators import login_required
@@ -53,11 +53,17 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         invoice = self.get_object()
         return invoice.organization == self.request.user.organization
 
+@login_required
 def addentries(request, pk):
     
+    invoice = get_object_or_404(Invoice, pk=pk)
+    
+    if request.user.organization != invoice.organization:
+        return HttpResponse("Unauthorized", status=401)
+
     if request.method == "POST":
         form = InvoiceEntryForm(request.POST)
-        form.instance.invoice = get_object_or_404(Invoice, pk=pk)
+        form.instance.invoice = invoice
         
         if form.is_valid():
             form.save()
