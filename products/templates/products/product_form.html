@@ -16,11 +16,11 @@
                         <div class="row">
                             <div class="col-md-4">{{ form.brand|as_crispy_field}}</div>
                             <div class="col-md-4">{{ form.name|as_crispy_field}}</div>
-                            <div class="col-md-4">{{ form.code|as_crispy_field}}</div>
+                            <div class="col-md-4">{{ form.stock|as_crispy_field}}</div>
                         </div>   
                         <div class="row">
                             <div class="col-md-4">{{ form.sale_price|as_crispy_field}}</div>
-                            <div class="col-md-4">{{ form.stock|as_crispy_field}}</div>
+                            <div class="col-md-4">{{ form.unit|as_crispy_field}}</div>
                             <div class="col-md-4">{{ form.category|as_crispy_field}}</div>
                         </div>   
                         <input type="submit" value="Add" class="btn btn-primary">
@@ -37,7 +37,6 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>#</th>
-                                    <th>Code</th>
                                     <th>Brand</th>
                                     <th>Name</th>
                                     <th>Category</th>
@@ -48,11 +47,10 @@
                             {% for item in recent %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ item.code }}</td>
                                 <td>{{ item.brand }}</td>
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.category }}</td>
-                                <td>{{ item.stock }}</td>
+                                <td>{{ item.stock }}/{{ item.unit }}</td>
                                 <td>{{ item.sale_price }}</td>
                             </tr>
                             {% empty %}

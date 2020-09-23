@@ -13,12 +13,12 @@ class InvoiceEntry(models.Model):
 
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name='entries')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='in_invoices')
+    price = models.DecimalField(max_digits=12, decimal_places=2)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
 
     @property
     def total_price(self):
-        print(self.product.sale_price * self.quantity)
-        return self.product.sale_price * self.quantity
+        return self.price * self.quantity
 
     class Meta:
         verbose_name_plural = "Invoice Entries"

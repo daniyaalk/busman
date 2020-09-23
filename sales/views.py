@@ -64,7 +64,7 @@ def addentries(request, pk):
     if request.method == "POST":
         form = InvoiceEntryForm(request.POST)
         form.instance.invoice = invoice
-        
+                
         if form.is_valid():
             form.save()
             return redirect('sales-add', pk)
