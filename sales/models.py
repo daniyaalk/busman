@@ -1,3 +1,4 @@
+import decimal
 from django.db import models
 from django.urls import reverse
 from products.models import Product
@@ -13,11 +14,20 @@ class Invoice(models.Model):
 
     def get_absolute_url(self):
         return reverse('sales-view', args=[self.pk])
+
+    @property
+    def total(self):
+
+        total = decimal.Decimal(0)
+        for entry in self.entries.all():
+            total += entry.total_price
+        return total
+
     
 class InvoiceEntry(models.Model):
 
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name='entries')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='in_invoices')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='in_invoices')
     price = models.DecimalField(max_digits=12, decimal_places=2)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
 

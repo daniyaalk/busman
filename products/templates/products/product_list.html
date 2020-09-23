@@ -39,18 +39,20 @@
                                 <th>Name</th>
                                 <th>Category</th>
                                 <th>In stock</th>
+                                <th>Earmarked</th>
                                 <th>Sale Price</th>
                                 <th>&nbsp;</th>
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>
                         {% for item in page_obj %}
-                        <tr>
+                        <tr {% if item.earmarked > item.stock %}class="bg-danger"{% endif %}>
                             <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
                             <td>{{ item.brand }}</td>
                             <td>{{ item.name }}</td>
                             <td>{{ item.category }}</td>
                             <td>{{ item.stock }}</td>
+                            <td>{{ item.earmarked|default:0 }}</td>
                             <td>{{ item.sale_price }}/{{ item.unit }}</td>
                             <td><a href="{% url 'products-edit' item.pk %}" class="btn btn-info">Edit</a></td>
                             <td><a href="{% url 'products-delete' item.pk %}" class="btn btn-danger">Delete</a></td>
