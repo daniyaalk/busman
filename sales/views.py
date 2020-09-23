@@ -27,16 +27,17 @@ def invoicelist(request):
 class InvoiceCreateView(LoginRequiredMixin, CreateView):
     model = Invoice
     form_class = InvoiceForm
-    success_url = reverse_lazy('sales-list')
 
     def form_valid(self, form):
         form.instance.organization = self.request.user.organization
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 class InvoiceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Invoice
     form_class = InvoiceForm
-    success_url = reverse_lazy('sales-list')
 
     def form_valid(self, form):
         form.instance.organization = self.request.user.organization
@@ -45,7 +46,7 @@ class InvoiceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         invoice = self.get_object()
         return invoice.organization == self.request.user.organization
-
+    
 class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Invoice
 
@@ -53,30 +54,27 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         invoice = self.get_object()
         return invoice.organization == self.request.user.organization
 
-@login_required
-def addentries(request, pk):
+class EntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = InvoiceEntry
+    form_class = InvoiceEntryForm
     
-    invoice = get_object_or_404(Invoice, pk=pk)
+    def form_valid(self, form):
+        self.invoice = get_object_or_404(
+            Invoice, pk=self.kwargs.get('pk'))
+        form.instance.invoice = self.invoice
+        return super().form_valid(form)
     
-    if request.user.organization != invoice.organization:
-        return HttpResponse("Unauthorized", status=401)
+    def get_success_url(self):
+        return reverse_lazy('sales-add', args=[self.invoice.pk])
 
-    if request.method == "POST":
-        form = InvoiceEntryForm(request.POST)
-        form.instance.invoice = invoice
-                
-        if form.is_valid():
-            form.save()
-            return redirect('sales-add', pk)
-    else:
-        form = InvoiceEntryForm()
-
-    form.fields["product"].queryset = Product.objects.filter(organization=request.user.organization)
-
-    added_entries = InvoiceEntry.objects.filter(invoice__pk=pk)
-    context = {
-        'pk': pk,
-        'form': form,
-        'added_entries': added_entries
-    }
-    return render(request, "sales/add_entries.html", context=context)
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        
+        context['pk'] = self.invoice.pk
+        context['added_entries'] = self.invoice.entries.all()
+        return context
+    
+    def test_func(self):
+        self.invoice = get_object_or_404(Invoice, pk=self.kwargs.get("pk"))
+        return self.invoice.organization == self.request.user.organization
+        

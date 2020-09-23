@@ -7,6 +7,7 @@ class Product(models.Model):
     brand = models.CharField(max_length=255, blank=True)
     name = models.CharField(max_length=255)
     sale_price = models.DecimalField(decimal_places=2, max_digits=12)
+    minimum_price = models.DecimalField(decimal_places=2, max_digits=12)
     stock = models.DecimalField(decimal_places=2, max_digits=12)
     unit = models.CharField(max_length=50, blank=True)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='products')
@@ -16,6 +17,6 @@ class Product(models.Model):
         order_with_respect_to = 'organization'
 
     def __str__(self):
-        return f"{self.brand} / {self.name} / Rs. {self.sale_price} / {self.stock} Remaining"
+        return f"{self.brand} / {self.name} / Rs. {self.minimum_price}-{self.sale_price} / {self.stock} Remaining"
 
 

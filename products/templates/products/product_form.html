@@ -15,13 +15,14 @@
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-md-4">{{ form.brand|as_crispy_field}}</div>
-                            <div class="col-md-4">{{ form.name|as_crispy_field}}</div>
-                            <div class="col-md-4">{{ form.stock|as_crispy_field}}</div>
+                            <div class="col-md-5">{{ form.name|as_crispy_field}}</div>
+                            <div class="col-md-3">{{ form.stock|as_crispy_field}}</div>
                         </div>   
                         <div class="row">
-                            <div class="col-md-4">{{ form.sale_price|as_crispy_field}}</div>
-                            <div class="col-md-4">{{ form.unit|as_crispy_field}}</div>
-                            <div class="col-md-4">{{ form.category|as_crispy_field}}</div>
+                            <div class="col-md-3">{{ form.sale_price|as_crispy_field}}</div>
+                            <div class="col-md-3">{{ form.minimum_price|as_crispy_field}}</div>
+                            <div class="col-md-3">{{ form.unit|as_crispy_field}}</div>
+                            <div class="col-md-3">{{ form.category|as_crispy_field}}</div>
                         </div>   
                         <input type="submit" value="Add" class="btn btn-primary">
                     </form>

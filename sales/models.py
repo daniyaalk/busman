@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from products.models import Product
 from organization.models import Organization
 
@@ -8,6 +9,10 @@ class Invoice(models.Model):
     date = models.DateField()
     customer_name = models.CharField(max_length=255)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='invoices')
+    discount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('sales-view', args=[self.pk])
     
 class InvoiceEntry(models.Model):
 

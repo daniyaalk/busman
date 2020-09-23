@@ -18,7 +18,7 @@
             <div class="card-body">
                 <h5 class="card-title">Added Entries</h5>
                 <div class="table-responsive mt-3">
-                
+
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
@@ -52,16 +52,16 @@
 </div>
 {% endblock %}
 {% block extras %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
-        integrity="sha512-hgoywpb1bcTi1B5kKwogCTG4cvTzDmFCJZWjit4ZimDIgXu7Dwsreq8GOQjKVUxFwxCWkLcJN5EN0W0aOngs4g=="
-        crossorigin="anonymous"></script>   
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
-        integrity="sha512-nATinx3+kN7dKuXEB0XLIpTd7j8QahdyJjE24jTJf4HASidUCFFN/TkSVn3CifGmWwfC2mO/VmFQ6hRn2IcAwg=="
-        crossorigin="anonymous" />
-    <script>
-        $('#id_product').selectize({
-                sortField: 'text'
-            });
-    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+    integrity="sha512-hgoywpb1bcTi1B5kKwogCTG4cvTzDmFCJZWjit4ZimDIgXu7Dwsreq8GOQjKVUxFwxCWkLcJN5EN0W0aOngs4g=="
+    crossorigin="anonymous"></script>
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+    integrity="sha512-nATinx3+kN7dKuXEB0XLIpTd7j8QahdyJjE24jTJf4HASidUCFFN/TkSVn3CifGmWwfC2mO/VmFQ6hRn2IcAwg=="
+    crossorigin="anonymous" />
+<script>
+    $('#id_product').selectize({
+        sortField: 'text'
+    });
+</script>
 {% endblock %}

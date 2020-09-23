@@ -4,8 +4,10 @@ from .models import Product
    
 class ProductForm(forms.ModelForm):
 
-    unit = forms.CharField(label="Sale price unit:")
-
     class Meta:
         model = Product
-        fields = ['brand', 'name', 'sale_price', 'stock', 'unit', 'category']
+        fields = ['brand', 'name', 'sale_price', 'minimum_price', 'stock', 'unit', 'category']
+        labels = {
+            'sale_price': 'MRP',
+            'unit': 'Price Unit'
+        }
