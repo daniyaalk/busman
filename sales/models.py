@@ -10,7 +10,13 @@ class Invoice(models.Model):
     date = models.DateField()
     customer_name = models.CharField(max_length=255)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='invoices')
-    discount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    discount = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=decimal.Decimal(0))
+    
+    class finalized(models.IntegerChoices):
+        PENDING = 0
+        FINALIZED = 1
+        
+    finalized = models.BooleanField(max_length=20, choices=finalized.choices, default=0) 
 
     def get_absolute_url(self):
         return reverse('sales-view', args=[self.pk])

@@ -12,7 +12,7 @@ class InvoiceForm(forms.ModelForm):
 
     class Meta:
         model = Invoice
-        exclude = ['organization']
+        exclude = ['organization', 'finalized']
         labels = {
             'discount': 'Discount %'
         }
