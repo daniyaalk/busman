@@ -8,7 +8,6 @@ from products.models import Product
 from .models import Invoice, InvoiceEntry
 from .filters import InvoiceFilter
 from .forms import InvoiceForm, InvoiceEntryForm
-import pdb
 
 # Create your views here.
 @login_required
@@ -56,8 +55,10 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         invoice = self.get_object()
         #Reduce inventory
         for entry in invoice.entries.all():
-            entry.product.stock = entry.product.stock-entry.quantity
-            entry.product.save()
+            #Skip if product has been deleted
+            if entry.product:
+                entry.product.stock = entry.product.stock-entry.quantity
+                entry.product.save()
         invoice.finalized = 1
         invoice.save()
         return redirect("sales-view", pk=pk)
@@ -111,4 +112,4 @@ class InvoiceEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView
     def test_func(self):
         self.invoice = self.get_object().invoice
         # Don't let the user edit if invoice is finalized
-        return self.invoice.organization == self.request.user.organization and not invoice.finalized
+        return self.invoice.organization == self.request.user.organization and not self.invoice.finalized
