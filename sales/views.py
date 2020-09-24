@@ -59,7 +59,7 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def test_func(self):
         invoice = self.get_object()
         # Don't let the user edit if invoice is finalized
-        return invoice.organization == self.request.user.organization and not invoice.finalized
+        return invoice.organization == self.request.user.organization
 
 class InvoiceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Invoice
