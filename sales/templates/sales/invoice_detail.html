@@ -4,7 +4,7 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                Invoice {% if object.finalized == "0" %}<a href="{% url 'sales-edit' object.pk %}" class="btn btn-outline-primary">Edit</a>{% endif %}
+                Invoice {% if object.finalized == 0 %}<a href="{% url 'sales-edit' object.pk %}" class="btn btn-outline-primary">Edit</a>{% endif %}
             </div>
             <div class="card-body">
                 <div class="row">
@@ -66,7 +66,6 @@
                                 <td></td>
                                 {% endif %}
                             </tr>
-                            {% if object.discount > 0 %}
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -74,16 +73,15 @@
                                 <td></td>
                                 <th>
                                     Discount 
-                                    {% if object.finalized == "0" %}
+                                    {% if object.finalized == 0 %}%
                                     (<a href="{% url 'sales-edit' object.pk %}">Edit</a>)
                                     {% endif %}
                                 </th>
                                 <td>{{ object.discount|floatformat:2 }}</td>
-                                {% if object.finalized == "0" %}
+                                {% if object.finalized == 0 %}
                                 <td></td>
                                 {% endif %}
                             </tr>
-                            {% endif %}
                             <tr>
                                 <td></td>
                                 <td></td>
