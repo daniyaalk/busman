@@ -27,6 +27,7 @@
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
+                                <th>&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,12 +39,40 @@
                                 <td>{{ entry.price }}</td>
                                 <td>{{ entry.quantity }}</td>
                                 <td>{{ entry.total_price|floatformat:2 }}</td>
+                                <td><a href="#" class="btn btn-danger">Delete</a></td>
                             </tr>
                             {% empty %}
                             <tr>
                                 <td colspan="5" class="text-center">No entries found</td>
                             </tr>
                             {% endfor %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <th>Gross Total</th>
+                                <td>{{ object.gross_total|floatformat:2 }}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <th>Discount</th>
+                                <td>{{ object.discount|floatformat:2 }}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <th>Net Total</th>
+                                <td>{{ object.net_total|floatformat:2 }}</td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

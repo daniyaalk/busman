@@ -52,7 +52,7 @@
                             <td>{{ item.name }}</td>
                             <td>{{ item.category }}</td>
                             <td>{{ item.stock }}</td>
-                            <td>{{ item.earmarked|default:0 }}</td>
+                            <td>{{ item.earmarked|floatformat:2 }}</td>
                             <td>{{ item.sale_price }}/{{ item.unit }}</td>
                             <td><a href="{% url 'products-edit' item.pk %}" class="btn btn-info">Edit</a></td>
                             <td><a href="{% url 'products-delete' item.pk %}" class="btn btn-danger">Delete</a></td>

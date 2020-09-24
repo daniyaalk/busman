@@ -8,7 +8,11 @@
                 <div class="card-body">
                     <h5 class="card-title">
                         <small class="text-muted float-right"><a href="{{request.url}}">Reset</a></small>
+                        {% if object %}
+                        Edit Product
+                        {% else %}
                         Add Product
+                        {% endif %}
                     </h5>
 
                     <form action="" method="POST">
@@ -24,7 +28,11 @@
                             <div class="col-md-3">{{ form.unit|as_crispy_field}}</div>
                             <div class="col-md-3">{{ form.category|as_crispy_field}}</div>
                         </div>   
+                        {% if object%}
+                        <input type="submit" value="Update" class="btn btn-primary">
+                        {% else %}
                         <input type="submit" value="Add" class="btn btn-primary">
+                        {% endif%}
                     </form>
                 </div>
             </div>

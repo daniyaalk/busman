@@ -16,12 +16,16 @@ class Invoice(models.Model):
         return reverse('sales-view', args=[self.pk])
 
     @property
-    def total(self):
+    def gross_total(self):
 
         total = decimal.Decimal(0)
         for entry in self.entries.all():
             total += entry.total_price
         return total
+    
+    @property
+    def net_total(self):
+        return self.gross_total*(1-(self.discount/100))
 
     
 class InvoiceEntry(models.Model):

@@ -40,14 +40,16 @@
                                 <th>Customer Name</th>
                                 <th>Value</th>
                                 <th>Date</th>
+                                <th>&nbsp;</th>
                             </tr>
                         </thead>
                         {% for invoice in page_obj %}
                         <tr>
                             <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
                             <td><a href="{% url 'sales-view' invoice.pk %}">{{ invoice.customer_name }}</a></td>
-                            <td>{{ invoice.total|floatformat:2 }}</td>
+                            <td>{{ invoice.gross_total|floatformat:2 }}</td>
                             <td>{{ invoice.date }}</td>
+                            <td><a href="#" class="btn btn-danger">Delete</a></td>
                         </tr>
                         {% empty %}
                         <tr>
