@@ -29,9 +29,9 @@
                             <div class="col-md-3">{{ form.category|as_crispy_field}}</div>
                         </div>   
                         {% if object%}
-                        <input type="submit" value="Update" class="btn btn-primary">
+                        <input type="submit" value="Update" class="btn btn-primary"><a href="javascript:history.back()" class="btn btn-secondary ml-2">Back</a>
                         {% else %}
-                        <input type="submit" value="Add" class="btn btn-primary">
+                        <input type="submit" value="Add" class="btn btn-primary"><a href="javascript:history.back()" class="btn btn-secondary ml-2">Back</a>
                         {% endif%}
                     </form>
                 </div>
