@@ -93,7 +93,7 @@ class InvoiceEntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView
     def test_func(self):
         self.invoice = get_object_or_404(Invoice, pk=self.kwargs.get("pk"))
         # Don't let the user edit if invoice is finalized
-        return self.invoice.organization == self.request.user.organization and not invoice.finalized
+        return self.invoice.organization == self.request.user.organization and not self.invoice.finalized
         
 class InvoiceEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
