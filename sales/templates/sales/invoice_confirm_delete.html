@@ -1,0 +1,40 @@
+{% extends 'home/base.html' %}
+{% block content %}
+<div class="gray-bg pb-3 pt-3">
+    <div class="container">
+        <div class="card border-danger text-center">
+            <div class="card-header">
+                Are you sure you want to delete this Invoice?
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Gross Value</th>
+                                <th>Discount %</th>
+                                <th>Net Value</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{{ object.customer_name }}</td>
+                            <td>{{ object.date }}</td>
+                            <td>{{ object.gross_total|floatformat:2 }}</td>
+                            <td>{{ object.discount }}</td>
+                            <td>{{ object.net_total|floatformat:2 }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer border-danger">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" name="submit" class="btn btn-danger" value="Delete">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

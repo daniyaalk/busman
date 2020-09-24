@@ -1,11 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from .models import Invoice, InvoiceEntry
 
 class InvoiceForm(forms.ModelForm):
 
     date = forms.DateTimeField(widget=forms.TextInput(attrs={
-        'type': 'date'
+        'type': 'date',
+        'value': timezone.now().strftime("%Y-%m-%d")
     }))
 
     class Meta:

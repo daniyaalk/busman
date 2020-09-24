@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DetailView
+from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
@@ -46,9 +46,17 @@ class InvoiceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         invoice = self.get_object()
         return invoice.organization == self.request.user.organization
-    
+   
 class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Invoice
+
+    def test_func(self):
+        invoice = self.get_object()
+        return invoice.organization == self.request.user.organization
+
+class InvoiceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Invoice
+    success_url = reverse_lazy('sales-list')
 
     def test_func(self):
         invoice = self.get_object()
@@ -65,7 +73,7 @@ class EntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super().form_valid(form)
     
     def get_success_url(self):
-        return reverse_lazy('sales-add', args=[self.invoice.pk])
+        return reverse_lazy('sales-entry-add', args=[self.invoice.pk])
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -78,3 +86,10 @@ class EntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         self.invoice = get_object_or_404(Invoice, pk=self.kwargs.get("pk"))
         return self.invoice.organization == self.request.user.organization
         
+# class InvoiceEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+
+#     model = InvoiceEntry
+
+#     def test_func(self):
+#         self.invoice = self.get_object().invoice
+#         return self.invoice.organization == self.request.user.organization

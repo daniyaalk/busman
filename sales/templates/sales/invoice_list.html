@@ -49,11 +49,11 @@
                             <td><a href="{% url 'sales-view' invoice.pk %}">{{ invoice.customer_name }}</a></td>
                             <td>{{ invoice.gross_total|floatformat:2 }}</td>
                             <td>{{ invoice.date }}</td>
-                            <td><a href="#" class="btn btn-danger">Delete</a></td>
+                            <td><a href="{% url 'sales-delete' invoice.pk %}" class="btn btn-danger">Delete</a></td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td style="text-align: center;" colspan="3">No Invoices found!</td>
+                            <td style="text-align: center;" colspan="5">No Invoices found!</td>
                         </tr>
                         {% endfor %}
                     </table>
