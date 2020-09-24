@@ -8,6 +8,7 @@ from products.models import Product
 from .models import Invoice, InvoiceEntry
 from .filters import InvoiceFilter
 from .forms import InvoiceForm, InvoiceEntryForm
+import pdb
 
 # Create your views here.
 @login_required
@@ -51,7 +52,12 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Invoice
 
     def post(self, request, pk, *args, **kwargs):
+        #Set invoice as finalized
         invoice = self.get_object()
+        #Reduce inventory
+        for entry in invoice.entries.all():
+            entry.product.stock = entry.product.stock-entry.quantity
+            entry.product.save()
         invoice.finalized = 1
         invoice.save()
         return redirect("sales-view", pk=pk)
