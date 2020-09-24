@@ -39,7 +39,12 @@
                                 <td>{{ entry.price }}</td>
                                 <td>{{ entry.quantity }}</td>
                                 <td>{{ entry.total_price|floatformat:2 }}</td>
-                                <td><a href="#" class="btn btn-danger">Delete</a></td>
+                                <td>
+                                    <form action="{% url 'sales-entry-delete' entry.pk %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="submit" class="btn btn-danger" value="Delete">
+                                    </form>
+                                </td>
                             </tr>
                             {% empty %}
                             <tr>
@@ -60,7 +65,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <th>Discount</th>
+                                <th>Discount (<a href="{% url 'sales-edit' object.pk %}">Edit</a>)</th>
                                 <td>{{ object.discount|floatformat:2 }}</td>
                                 <td></td>
                             </tr>

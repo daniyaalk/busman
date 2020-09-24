@@ -62,7 +62,7 @@ class InvoiceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         invoice = self.get_object()
         return invoice.organization == self.request.user.organization
 
-class EntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class InvoiceEntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = InvoiceEntry
     form_class = InvoiceEntryForm
     
@@ -86,10 +86,13 @@ class EntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         self.invoice = get_object_or_404(Invoice, pk=self.kwargs.get("pk"))
         return self.invoice.organization == self.request.user.organization
         
-# class InvoiceEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class InvoiceEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
-#     model = InvoiceEntry
+    model = InvoiceEntry
 
-#     def test_func(self):
-#         self.invoice = self.get_object().invoice
-#         return self.invoice.organization == self.request.user.organization
+    def get_success_url(self):
+        return self.invoice.get_absolute_url()
+
+    def test_func(self):
+        self.invoice = self.get_object().invoice
+        return self.invoice.organization == self.request.user.organization
