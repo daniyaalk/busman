@@ -12,6 +12,7 @@ django = "*"
 django-crispy-forms = "*"
 djangorestframework = "*"
 django-filter = "*"
+django-markdown = "*"
 
 [requires]
 python_version = "3.8"

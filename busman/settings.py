@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'django_filters',
+    'rest_framework',
 
     'home.apps.HomeConfig',
     'users.apps.UsersConfig',
