@@ -1,4 +1,42 @@
 {% extends 'home/base.html' %}
 {% block content %}
-
+<div class="row">
+    <div class="col-md-2 bg-secondary">
+        Test
+    </div>
+    <div class="col-md-10">
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        Products
+                    </div>
+                    <div class="card-body">
+                        <h1>{{ organization.products.count }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        Invoices
+                    </div>
+                    <div class="card-body">
+                        <h1>{{ organization.invoices.count }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        Sales this month
+                    </div>
+                    <div class="card-body">
+                        <h1>3</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

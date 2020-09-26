@@ -12,7 +12,8 @@ from .models import Organization
 @user_has_organization(True)
 def dash(request):
     context = {
-        'title': 'Dashboard'
+        'title': 'Dashboard',
+        'organization': request.user.organization
     }
 
     return render(request, "organization/dash.html", context=context)
