@@ -5,28 +5,28 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from products.models import Product
-from .models import Invoice, InvoiceEntry
-from .filters import InvoiceFilter
-from .forms import InvoiceForm, InvoiceEntryForm
+from .models import SalesInvoice, SalesInvoiceEntry
+from .filters import SalesInvoiceFilter
+from .forms import SalesInvoiceForm, SalesInvoiceEntryForm
 
 # Create your views here.
 @login_required
 def invoicelist(request):
     organization = request.user.organization
-    invoice_list = Invoice.objects.filter(organization=organization).order_by("-id")
-    invoicefilter = InvoiceFilter(request.GET, queryset=invoice_list)
+    invoice_list = SalesInvoice.objects.filter(organization=organization).order_by("-id")
+    invoicefilter = SalesInvoiceFilter(request.GET, queryset=invoice_list)
 
     paginator = Paginator(invoicefilter.qs, 25)
     page_obj = paginator.get_page(request.GET.get('page'))
 
     context = {'filter': invoicefilter, 'page_obj': page_obj}
 
-    return render(request, "sales/invoice_list.html", context=context)
+    return render(request, "sales/salesinvoice_list.html", context=context)
 
 
 class InvoiceCreateView(LoginRequiredMixin, CreateView):
-    model = Invoice
-    form_class = InvoiceForm
+    model = SalesInvoice
+    form_class = SalesInvoiceForm
 
     def form_valid(self, form):
         form.instance.organization = self.request.user.organization
@@ -36,8 +36,8 @@ class InvoiceCreateView(LoginRequiredMixin, CreateView):
         return self.object.get_absolute_url()
 
 class InvoiceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Invoice
-    form_class = InvoiceForm
+    model = SalesInvoice
+    form_class = SalesInvoiceForm
 
     def form_valid(self, form):
         form.instance.organization = self.request.user.organization
@@ -48,7 +48,7 @@ class InvoiceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return invoice.organization == self.request.user.organization and not invoice.finalized #Don't let the user edit if invoice is finalized
    
 class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = Invoice
+    model = SalesInvoice
 
     def post(self, request, pk, *args, **kwargs):
         #Set invoice as finalized
@@ -69,7 +69,7 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return invoice.organization == self.request.user.organization
 
 class InvoiceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Invoice
+    model = SalesInvoice
     success_url = reverse_lazy('sales-list')
 
     def test_func(self):
@@ -78,12 +78,12 @@ class InvoiceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return invoice.organization == self.request.user.organization
 
 class InvoiceEntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
-    model = InvoiceEntry
-    form_class = InvoiceEntryForm
+    model = SalesInvoiceEntry
+    form_class = SalesInvoiceEntryForm
     
     def form_valid(self, form):
         self.invoice = get_object_or_404(
-            Invoice, pk=self.kwargs.get('pk'))
+            SalesInvoice, pk=self.kwargs.get('pk'))
         form.instance.invoice = self.invoice
         return super().form_valid(form)
     
@@ -98,13 +98,13 @@ class InvoiceEntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView
         return context
     
     def test_func(self):
-        self.invoice = get_object_or_404(Invoice, pk=self.kwargs.get("pk"))
+        self.invoice = get_object_or_404(SalesInvoice, pk=self.kwargs.get("pk"))
         # Don't let the user edit if invoice is finalized
         return self.invoice.organization == self.request.user.organization and not self.invoice.finalized
         
 class InvoiceEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
-    model = InvoiceEntry
+    model = SalesInvoiceEntry
 
     def get_success_url(self):
         return self.invoice.get_absolute_url()

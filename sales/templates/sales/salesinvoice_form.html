@@ -18,7 +18,7 @@
                 <form action="" method="POST">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-md-6">{{ form.customer_name|as_crispy_field}}</div>
+                        <div class="col-md-6">{{ form.name|as_crispy_field}}</div>
                         <div class="col-md-4">{{ form.date|as_crispy_field}}</div>
                         <div class="col-md-2">{{ form.discount|as_crispy_field}}</div>
                     </div>

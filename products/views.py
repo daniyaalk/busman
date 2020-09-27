@@ -17,7 +17,7 @@ def productlist(request):
     
     organization = request.user.organization
     products = Product.objects.filter(
-        organization=organization).order_by("-id").annotate(earmarked=Sum('in_invoices__quantity'))
+        organization=organization).order_by("-id").annotate(earmarked=Sum('salesinvoiceentry__quantity'))
     productfilter = ProductFilter(request.GET, queryset=products)
 
     paginator = Paginator(productfilter.qs, 25)
