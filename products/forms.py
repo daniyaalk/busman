@@ -12,7 +12,7 @@ class ProductForm(forms.ModelForm):
             'unit': 'Price Unit'
         }
 
-"""Abstract forms for Invoicing"""
+"""Abstract form for Invoicing"""
 class InvoiceForm(forms.ModelForm):
 
     date = forms.DateField(widget=forms.TextInput(attrs={

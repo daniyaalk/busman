@@ -1,18 +1,11 @@
 from django import forms
 from django.utils import timezone
 from .models import SalesInvoice, SalesInvoiceEntry
+from products.forms import InvoiceForm
 
-
-class SalesInvoiceForm(forms.ModelForm):
-
-    date = forms.DateTimeField(widget=forms.TextInput(attrs={
-        'type': 'date',
-        'value': timezone.now().strftime("%Y-%m-%d")
-    }))
-
-    class Meta:
+class SalesInvoiceForm(InvoiceForm):
+    class Meta(InvoiceForm.Meta):
         model = SalesInvoice
-        exclude = ['organization', 'finalized']
         labels = {
             'discount': 'Discount %'
         }
