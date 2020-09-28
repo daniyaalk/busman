@@ -1,5 +1,5 @@
 from django import forms
-from django.core.validators import ValidationError
+from django.utils import timezone
 from .models import Product
    
 class ProductForm(forms.ModelForm):
@@ -11,3 +11,14 @@ class ProductForm(forms.ModelForm):
             'sale_price': 'MRP',
             'unit': 'Price Unit'
         }
+
+"""Abstract forms for Invoicing"""
+class InvoiceForm(forms.ModelForm):
+
+    date = forms.DateField(widget=forms.TextInput(attrs={
+        'type': 'date',
+        'value': timezone.now().strftime("%Y-%m-%d")
+    }))
+
+    class Meta:
+        exclude = ('organization', 'finalized')

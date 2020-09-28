@@ -1,13 +1,7 @@
 from django import forms
-from django.utils import timezone
 from .models import PurchaseInvoice
+from products.forms import InvoiceForm
 
-class PurchaseInvoiceForm(forms.ModelForm):
-    date = forms.DateField(widget=forms.TextInput(attrs={
-        'type': 'date',
-        'value': timezone.now().strftime("%Y-%m-%d")
-    }))
-
-    class Meta:
+class PurchaseInvoiceForm(InvoiceForm):
+    class Meta(InvoiceForm.Meta):
         model = PurchaseInvoice
-        exclude = ['organization', 'finalized']
