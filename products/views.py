@@ -5,7 +5,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-from django.db.models.aggregates import Sum
+from django.db.models import Q, Sum
 from organization.models import Organization
 from .models import Product
 from .forms import ProductForm
@@ -16,8 +16,8 @@ from .filters import ProductFilter
 def productlist(request):
     
     organization = request.user.organization
-    products = Product.objects.filter(
-        organization=organization).order_by("-id").annotate(earmarked=Sum('salesinvoiceentry__quantity'))
+    products = Product.objects.filter(organization=organization).order_by("-id").annotate(earmarked=Sum(
+        'salesinvoiceentry__quantity', filter=Q(salesinvoiceentry__invoice__finalized=0)))
     productfilter = ProductFilter(request.GET, queryset=products)
 
     paginator = Paginator(productfilter.qs, 25)
