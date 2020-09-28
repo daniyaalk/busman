@@ -1,5 +1,6 @@
 from django.db import models
 from decimal import Decimal
+import operator
 from organization.models import Organization
 
 # Create your models here.
@@ -35,6 +36,23 @@ class Invoice(models.Model):
     class Meta:
         abstract = True
         ordering = ["-id"]
+
+    PURCHASE = operator.add
+    SALE = operator.sub
+
+    def finalize(self, action):
+        if self.finalized == 0:
+            for entry in self.entries.all():
+                #Skip if the product has been deleted
+                if entry.product:
+                    entry.product.stock += action(0, entry.quantity)
+                    entry.product.save()
+                self.finalized = 1
+                self.save()
+            return True
+        else: return False
+
+
 
     @property
     def gross_total(self):

@@ -54,18 +54,11 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         #Set invoice as finalized
         invoice = self.get_object()
         #Reduce inventory
-        for entry in invoice.entries.all():
-            #Skip if product has been deleted
-            if entry.product:
-                entry.product.stock = entry.product.stock-entry.quantity
-                entry.product.save()
-        invoice.finalized = 1
-        invoice.save()
+        invoice.finalize(action=invoice.SALE)
         return redirect("sales-view", pk=pk)
 
     def test_func(self):
         invoice = self.get_object()
-        # Don't let the user edit if invoice is finalized
         return invoice.organization == self.request.user.organization
 
 class InvoiceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

@@ -37,13 +37,7 @@ class PurchaseDetailView(LoginRequiredMixin, UserPassesTestMixin,DetailView):
         #Set invoice as finalized
         invoice = self.get_object()
         #Reduce inventory
-        for entry in invoice.entries.all():
-            #Skip if product has been deleted
-            if entry.product:
-                entry.product.stock = entry.product.stock+entry.quantity
-                entry.product.save()
-        invoice.finalized = 1
-        invoice.save()
+        invoice.finalize(action=invoice.PURCHASE)
         return redirect("purchase-view", pk=pk)
 
     def test_func(self):
@@ -56,7 +50,7 @@ class PurchaseUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         invoice = self.get_object()
-        return invoice.organization == self.request.user.organization
+        return invoice.organization == self.request.user.organization and not invoice.finalized
 
 class PurchaseDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = PurchaseInvoice

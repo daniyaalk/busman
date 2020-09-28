@@ -8,8 +8,7 @@ from products.models import Product, Invoice, InvoiceEntry
 class PurchaseInvoice(Invoice):
     class Meta:
         verbose_name_plural = 'Purchase Invoices'
-        
-    
+           
     def get_absolute_url(self):
         return reverse_lazy('purchase-view', args=[self.pk])
 
