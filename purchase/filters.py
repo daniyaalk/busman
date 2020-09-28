@@ -1,4 +1,4 @@
-from .models import Purchase
+from .models import PurchaseInvoice as Purchase
 import django_filters
 
 class PurchaseFilter(django_filters.FilterSet):

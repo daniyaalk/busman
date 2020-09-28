@@ -34,6 +34,7 @@ class Invoice(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ["-id"]
 
     @property
     def gross_total(self):

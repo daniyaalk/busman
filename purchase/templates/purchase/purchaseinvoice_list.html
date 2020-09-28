@@ -36,7 +36,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>#</th>
-                                <th>Customer Name</th>
+                                <th>Vendor Name</th>
                                 <th>Value</th>
                                 <th>Date</th>
                                 <th>&nbsp;</th>
@@ -45,7 +45,7 @@
                         {% for invoice in page_obj %}
                         <tr>
                             <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
-                            <td><a href="{% url 'purchase-view' invoice.pk %}">{{ invoice.vendor_name }}</a></td>
+                            <td><a href="{% url 'purchase-view' invoice.pk %}">{{ invoice.name }}</a></td>
                             <td>{{ invoice.net_total|floatformat:2 }}</td>
                             <td>{{ invoice.date }}</td>
                             <td><a href="{% url 'purchase-delete' invoice.pk %}" class="btn btn-danger">Delete</a></td>

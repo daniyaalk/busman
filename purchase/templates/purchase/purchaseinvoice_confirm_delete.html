@@ -11,13 +11,13 @@
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Customer</th>
+                                <th>Vendor</th>
                                 <th>Date</th>
                                 <th>Net Value</th>
                             </tr>
                         </thead>
                         <tr>
-                            <td>{{ object.vendor_name }}</td>
+                            <td>{{ object.name }}</td>
                             <td>{{ object.date }}</td>
                             <td>{{ object.net_total|floatformat:2 }}</td>
                         </tr>

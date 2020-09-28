@@ -14,11 +14,10 @@
                     Create Invoice
                     {% endif %}
                 </h5>
-
                 <form action="" method="POST">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-md-8">{{ form.vendor_name|as_crispy_field}}</div>
+                        <div class="col-md-8">{{ form.name|as_crispy_field}}</div>
                         <div class="col-md-4">{{ form.date|as_crispy_field}}</div>
                     </div>
                     {% if object%}

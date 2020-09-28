@@ -2,40 +2,26 @@ from django.db import models
 from decimal import Decimal
 from django.urls import reverse_lazy
 from organization.models import Organization
-from products.models import Product
+from products.models import Product, Invoice, InvoiceEntry
 
 # Create your models here.
-class Purchase(models.Model):
-    
-    date = models.DateField()
-    vendor_name = models.CharField(max_length=255)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
-
+class PurchaseInvoice(Invoice):
     class Meta:
-        ordering = ['-id']
-
+        verbose_name_plural = 'Purchase Invoices'
+        
+    
     def get_absolute_url(self):
         return reverse_lazy('purchase-view', args=[self.pk])
 
     @property
     def net_total(self):
-        total = Decimal(0)
-        for entry in self.entries.all().values('quantity', 'price'):
-            total += entry['quantity']*entry['price']
-        return total
+        return self.gross_total # Net total and gross total are the same for purchase invoice
 
 
 
-class PurchaseEntry(models.Model):
+class PurchaseInvoiceEntry(InvoiceEntry):
     
-    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, related_name='entries')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='in_purhcases')
-    price = models.DecimalField(max_digits=12, decimal_places=2)
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    purchase = models.ForeignKey(PurchaseInvoice, on_delete=models.CASCADE, related_name='entries')
 
     class Meta:
         verbose_name_plural = 'Purchase Entries'
-
-    @property
-    def total_price(self):
-        return self.price * self.quantity
