@@ -1,8 +1,6 @@
 from django.db import models
-from decimal import Decimal
 from django.urls import reverse_lazy
-from organization.models import Organization
-from products.models import Product, Invoice, InvoiceEntry
+from products.models import Invoice, InvoiceEntry
 
 # Create your models here.
 class PurchaseInvoice(Invoice):

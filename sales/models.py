@@ -1,12 +1,8 @@
-import decimal
 from django.db import models
 from django.urls import reverse
-from products.models import Product, Invoice, InvoiceEntry
-from organization.models import Organization
+from products.models import Invoice, InvoiceEntry
 
 # Create your models here.
-# Create your models here.
-
 
 class SalesInvoice(Invoice):
 

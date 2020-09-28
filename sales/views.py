@@ -1,10 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
-from products.models import Product
 from .models import SalesInvoice, SalesInvoiceEntry
 from .filters import SalesInvoiceFilter
 from .forms import SalesInvoiceForm, SalesInvoiceEntryForm
