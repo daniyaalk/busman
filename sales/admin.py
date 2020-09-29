@@ -1,14 +1,6 @@
 from django.contrib import admin
+from invoicing.admin import InvoiceAdmin, InvoiceEntryAdmin
 from .models import SalesInvoice, SalesInvoiceEntry
 
-# Register your models here.
-
-
-class SalesInvoiceAdmin(admin.ModelAdmin):
-    list_display = ('organization', 'date')
-    list_filter = ('organization',)
-    sortable_by = ('date',)
-
-
-admin.site.register(SalesInvoice, SalesInvoiceAdmin)
-admin.site.register(SalesInvoiceEntry)
+admin.site.register(SalesInvoice, InvoiceAdmin)
+admin.site.register(SalesInvoiceEntry, InvoiceEntryAdmin)
