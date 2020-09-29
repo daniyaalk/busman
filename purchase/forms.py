@@ -1,5 +1,5 @@
 from .models import PurchaseInvoice
-from products.forms import InvoiceForm
+from invoicing.forms import InvoiceForm
 
 class PurchaseInvoiceForm(InvoiceForm):
     class Meta(InvoiceForm.Meta):

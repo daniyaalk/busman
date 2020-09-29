@@ -1,12 +1,6 @@
 from .models import PurchaseInvoice as Purchase
-import django_filters
+from invoicing.filters import InvoiceFilter
 
-class PurchaseFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(lookup_expr='icontains')
-    date = django_filters.DateFromToRangeFilter(widget=django_filters.widgets.RangeWidget(attrs={
-        'type': 'date'
-    }))
-
-    class Meta:
+class PurchaseInvoiceFilter(InvoiceFilter):
+    class Meta(InvoiceFilter.Meta):
         model = Purchase
-        fields = ['name', 'date']

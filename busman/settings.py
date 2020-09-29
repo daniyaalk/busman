@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'sales.apps.SalesConfig',
     'purchase.apps.PurchaseConfig',
     'api.apps.ApiConfig',
+    'invoicing.apps.InvoicingConfig',
 
 ]
 

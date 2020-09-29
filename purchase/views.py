@@ -5,10 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.core.paginator import Paginator
 from .models import PurchaseInvoice, PurchaseInvoiceEntry, PURCHASE
-from .filters import PurchaseFilter
+from .filters import PurchaseInvoiceFilter
 from .forms import PurchaseInvoiceForm
 
-from products.abstract_views import (
+from invoicing.views import (
     InvoiceListView,
     InvoiceCreateView,
     InvoiceDetailView,
@@ -20,7 +20,7 @@ from products.abstract_views import (
 # Create your views here.
 class PurchaseInvoiceListView(InvoiceListView):
     model = PurchaseInvoice
-    filterset_class = PurchaseFilter
+    filterset_class = PurchaseInvoiceFilter
 
     template_name = "purchase/purchaseinvoice_list.html"
 

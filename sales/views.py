@@ -6,7 +6,7 @@ from .models import SalesInvoice, SalesInvoiceEntry, SALE
 from .filters import SalesInvoiceFilter
 from .forms import SalesInvoiceForm, SalesInvoiceEntryForm
 
-from products.abstract_views import (
+from invoicing.views import (
     InvoiceListView,
     InvoiceCreateView, 
     InvoiceDetailView, 

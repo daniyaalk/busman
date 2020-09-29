@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse_lazy
-from products.models import Invoice, InvoiceEntry
+from invoicing.models import Invoice, InvoiceEntry
 
 # Create your models here.
 PURCHASE = Invoice.PURCHASE

@@ -1,6 +1,6 @@
 from django import forms
 from .models import SalesInvoice, SalesInvoiceEntry
-from products.forms import InvoiceForm
+from invoicing.forms import InvoiceForm
 
 class SalesInvoiceForm(InvoiceForm):
     class Meta(InvoiceForm.Meta):
