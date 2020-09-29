@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import SalesInvoice, SalesInvoiceEntry
+from .models import SalesInvoice, SalesInvoiceEntry, SALE
 from .filters import SalesInvoiceFilter
 from .forms import SalesInvoiceForm, SalesInvoiceEntryForm
 
@@ -33,14 +33,15 @@ class SalesInvoiceCreateView(InvoiceCreateView):
     model = SalesInvoice
     form_class = SalesInvoiceForm
 
+class SalesInvoiceDetailView(InvoiceDetailView):
+    model = SalesInvoice
+    finalize_action = SALE
+    invoice_finalize_redirect_name = 'sales-view'
+
 class SalesInvoiceUpdateView(InvoiceUpdateView):
     model = SalesInvoice
     form_class = SalesInvoiceForm
    
-class SalesInvoiceDetailView(InvoiceDetailView):
-    model = SalesInvoice
-    invoice_finalize_redirect_name = 'sales-view'
-
 class SalesInvoiceDeleteView(InvoiceDeleteView):
     model = SalesInvoice
     success_url = reverse_lazy('sales-list')
@@ -48,6 +49,7 @@ class SalesInvoiceDeleteView(InvoiceDeleteView):
 class SalesInvoiceEntryCreateView(InvoiceEntryCreateView):
     model = SalesInvoiceEntry
     parent_model = SalesInvoice
+    action = SalesInvoice.SALE
     form_class = SalesInvoiceEntryForm
         
 

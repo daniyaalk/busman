@@ -3,7 +3,7 @@ from django.urls import reverse
 from products.models import Invoice, InvoiceEntry
 
 # Create your models here.
-
+SALE = Invoice.SALE
 class SalesInvoice(Invoice):
 
     discount = models.DecimalField(

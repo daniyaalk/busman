@@ -28,7 +28,7 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         #Set invoice as finalized
         invoice = self.get_object()
         #Reduce inventory
-        invoice.finalize(action=invoice.SALE)
+        invoice.finalize(action=self.finalize_action)
         return redirect(self.invoice_finalize_redirect_name, pk=pk)
 
     def test_func(self):

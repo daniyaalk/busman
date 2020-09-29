@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from products.models import Invoice, InvoiceEntry
 
 # Create your models here.
+PURCHASE = Invoice.PURCHASE
 class PurchaseInvoice(Invoice):
     class Meta:
         verbose_name_plural = 'Purchase Invoices'
@@ -18,7 +19,7 @@ class PurchaseInvoice(Invoice):
 
 class PurchaseInvoiceEntry(InvoiceEntry):
     
-    purchase = models.ForeignKey(PurchaseInvoice, on_delete=models.CASCADE, related_name='entries')
+    invoice = models.ForeignKey(PurchaseInvoice, on_delete=models.CASCADE, related_name='entries')
 
     class Meta:
         verbose_name_plural = 'Purchase Entries'
