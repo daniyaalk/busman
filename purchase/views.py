@@ -9,6 +9,7 @@ from .filters import PurchaseFilter
 from .forms import PurchaseInvoiceForm
 
 from products.abstract_views import (
+    InvoiceListView,
     InvoiceCreateView,
     InvoiceDetailView,
     InvoiceUpdateView,
@@ -17,18 +18,11 @@ from products.abstract_views import (
     InvoiceEntryDeleteView)
 
 # Create your views here.
-@login_required
-def purchaselist(request):
-    organization = request.user.organization
+class PurchaseInvoiceListView(InvoiceListView):
+    model = PurchaseInvoice
+    filterset_class = PurchaseFilter
 
-    purchases = PurchaseInvoice.objects.filter(organization=organization).order_by("-id")
-    purchasefilter = PurchaseFilter(request.GET, queryset=purchases)
-
-    paginator = Paginator(purchasefilter.qs, 25)
-    page_obj = paginator.get_page(request.GET.get('page'))
-
-    context = {'filter': purchasefilter, 'page_obj': page_obj}
-    return render(request, 'purchase/purchaseinvoice_list.html', context=context)
+    template_name = "purchase/purchaseinvoice_list.html"
 
 class PurchaseInvoiceCreateView(LoginRequiredMixin, CreateView):
     model = PurchaseInvoice
