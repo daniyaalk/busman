@@ -1,4 +1,5 @@
 {% extends 'home/base.html' %}
+{% load humanize %}
 {% block content %}
 <div class="row">
     <div class="col-md-2 bg-secondary">
@@ -32,7 +33,7 @@
                         Sales this month
                     </div>
                     <div class="card-body">
-                        <h1>3</h1>
+                        <h1>{{ sale_this_month|intcomma }}</h1>
                     </div>
                 </div>
             </div>

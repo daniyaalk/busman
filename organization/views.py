@@ -4,6 +4,8 @@ from django.views.generic import CreateView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import (LoginRequiredMixin, UserPassesTestMixin)
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from django.db.models import Sum, F
 from .decorators import user_has_organization
 from .models import Organization
 
@@ -11,10 +13,15 @@ from .models import Organization
 @login_required
 @user_has_organization(True)
 def dash(request):
+
+    organization = request.user.organization
+    
     context = {
         'title': 'Dashboard',
-        'organization': request.user.organization
+        'organization': organization,
     }
+
+    context["sale_this_month"] = organization.invoices.filter(date__gte=datetime.today().date().replace(day=1)).aggregate(sum=Sum(F('entries__price')*F('entries__quantity')))['sum']
 
     return render(request, "organization/dash.html", context=context)
 
