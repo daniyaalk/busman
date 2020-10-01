@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django.contrib.humanize',
+    'django.contrib.admindocs',
 
     'crispy_forms',
     'django_filters',
@@ -50,7 +51,10 @@ INSTALLED_APPS = [
     'organization.apps.OrganizationConfig',
     'products.apps.ProductsConfig',
     'sales.apps.SalesConfig',
+    'purchase.apps.PurchaseConfig',
     'api.apps.ApiConfig',
+    'invoicing.apps.InvoicingConfig',
+
 ]
 
 MIDDLEWARE = [

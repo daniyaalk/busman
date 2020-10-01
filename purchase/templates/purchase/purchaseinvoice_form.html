@@ -1,0 +1,51 @@
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="gray-bg pt-3 pb-3">
+
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <small class="text-muted float-right"><a href="{{request.url}}">Reset</a></small>
+                    {% if object %}
+                    Edit Invoice
+                    {% else %}
+                    Create Invoice
+                    {% endif %}
+                </h5>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8">{{ form.name|as_crispy_field}}</div>
+                        <div class="col-md-4">{{ form.date|as_crispy_field}}</div>
+                    </div>
+                    {% if object%}
+                    <input type="submit" value="Update" class="btn btn-primary"><a href="javascript:history.back()"
+                        class="btn btn-secondary ml-2">Back</a>
+                    {% else %}
+                    <input type="submit" value="Add" class="btn btn-primary"><a href="javascript:history.back()"
+                        class="btn btn-secondary ml-2">Back</a>
+                    {% endif%}
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock %}
+{% block extras%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+    integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+    crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        $("#id_category").autocomplete({
+            source: '{% url "api-categories" %}',
+            minLength: 1
+        })
+    })
+</script>
+{% endblock %}

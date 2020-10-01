@@ -21,6 +21,7 @@ from home import views as home_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('admin/doc/', include('django.contrib.admindocs.urls')),
 
     path('', home_views.home, name='home-home'),
 
@@ -28,6 +29,7 @@ urlpatterns = [
     path('org/', include('organization.urls')),
     path('products/', include('products.urls')),
     path('sales/', include('sales.urls')),
+    path('purchase/', include('purchase.urls')),
     path('api/', include('api.urls')),
 ]
 
