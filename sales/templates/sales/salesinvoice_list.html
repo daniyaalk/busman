@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title">
-                    <h5>Purchases <a href="{% url 'purchase-create' %}" class="btn btn-outline-primary">Create</a></h5>
+                    <h5>Invoices <a href="{% url 'sales-create' %}" class="btn btn-outline-primary">Create</a></h5>
                 </div>
                 <div class="accordion" id="accordionExample">
                     <div class="card">
@@ -16,7 +16,8 @@
                                     data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                     Filter List
                                 </button>
-                                <small class="text-muted float-right"><a href="{% url 'purchase-list' %}">Clear</a></small>
+                                <small class="text-muted float-right"><a
+                                        href="{% url 'sales-list' %}">Clear</a></small>
                             </h5>
                         </div>
 
@@ -38,6 +39,7 @@
                                 <th>#</th>
                                 <th>Customer Name</th>
                                 <th>Value</th>
+                                <th>Status</th>
                                 <th>Date</th>
                                 <th>&nbsp;</th>
                             </tr>
@@ -45,10 +47,11 @@
                         {% for invoice in page_obj %}
                         <tr>
                             <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
-                            <td><a href="{% url 'purchase-view' invoice.pk %}">{{ invoice.vendor_name }}</a></td>
-                            <td>{{ invoice.net_total|floatformat:2 }}</td>
+                            <td><a href="{% url 'sales-view' invoice.pk %}">{{ invoice.name }}</a></td>
+                            <td>{{ invoice.gross_total|floatformat:2 }}</td>
+                            <td>{{ invoice.get_finalized_display }}</td>
                             <td>{{ invoice.date }}</td>
-                            <td><a href="{% url 'purchase-delete' invoice.pk %}" class="btn btn-danger">Delete</a></td>
+                            <td><a href="{% url 'sales-delete' invoice.pk %}" class="btn btn-danger">Delete</a></td>
                         </tr>
                         {% empty %}
                         <tr>

@@ -4,17 +4,16 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                Invoice <a href="{% url 'purchase-edit' object.pk %}"
-                    class="btn btn-outline-primary">Edit</a>
+                Invoice {% if object.finalized == 0 %}<a href="{% url 'sales-edit' object.pk %}" class="btn btn-outline-primary">Edit</a>{% endif %}
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        Vendor: {{ object.vendor_name }}
+                        Customer: {{ object.name }}
                     </div>
                     <div class="col-md-6">
                         Dated: {{ object.date }}
-                    </div>
+                    </div>  
                 </div>
                 <hr>
                 <h5>Products:</h5>
@@ -28,7 +27,9 @@
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
+                                {% if object.finalized == 0 %}
                                 <th>&nbsp;</th>
+                                {% endif %}
                             </tr>
                         </thead>
                         <tbody>
@@ -40,12 +41,14 @@
                                 <td>{{ entry.price }}</td>
                                 <td>{{ entry.quantity }}</td>
                                 <td>{{ entry.total_price|floatformat:2 }}</td>
+                                {% if object.finalized == 0 %}
                                 <td>
-                                    <form action="{% url 'purchase-entry-delete' entry.pk %}" method="POST">
+                                    <form action="{% url 'sales-entry-delete' entry.pk %}" method="POST">
                                         {% csrf_token %}
                                         <input type="submit" class="btn btn-danger" value="Delete">
                                     </form>
                                 </td>
+                                {% endif %}
                             </tr>
                             {% empty %}
                             <tr>
@@ -57,17 +60,53 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <th>Gross Total</th>
+                                <td>{{ object.gross_total|floatformat:2 }}</td>
+                                {% if object.finalized == 0 %}
+                                <td></td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <th>
+                                    Discount 
+                                    {% if object.finalized == 0 %}%
+                                    (<a href="{% url 'sales-edit' object.pk %}">Edit</a>)
+                                    {% endif %}
+                                </th>
+                                <td>{{ object.discount|floatformat:2 }}</td>
+                                {% if object.finalized == 0 %}
+                                <td></td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <th>Net Total</th>
                                 <td>{{ object.net_total|floatformat:2 }}</td>
-                                <td></td>
+                                {% if object.finalized == 0 %}
+                                <td>
+                                    <form id="finalize-form" method="POST">
+                                        {% csrf_token %}
+                                    </form>
+                                    <button class="btn btn-info" id="finalize-form-button">Finalize Invoice</button>
+                                </td>
+                                {% endif %}
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="card-footer">
-                <a href="{% url 'purchase-entry-add' object.pk %}" class="btn btn-outline-primary">Add Products</a>
-                <a href="{% url 'purchase-list' %}" class="btn btn-secondary">Back</a>
+                {% if object.finalized == 0 %}
+                <a href="{% url 'sales-entry-add' object.pk %}" class="btn btn-outline-primary">Add Products</a>
+                {% endif %}
+                <a href="{% url 'sales-list' %}" class="btn btn-secondary">Back</a>
             </div>
         </div>
     </div>
@@ -75,9 +114,9 @@
 {% endblock %}
 {% block extras %}
 <script>
-    $(function () {
+    $(function(){
         $("#finalize-form-button").on('click', function () {
-            if (confirm("Are you sure you want to finalize this invoice? This operation is irreversible.")) {
+            if(confirm("Are you sure you want to finalize this invoice? This operation is irreversible.")){
                 $('#finalize-form').submit()
             }
         })

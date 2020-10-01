@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django.contrib.admindocs',
+
     'crispy_forms',
     'django_filters',
     'rest_framework',
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
     'sales.apps.SalesConfig',
     'purchase.apps.PurchaseConfig',
     'api.apps.ApiConfig',
+    'invoicing.apps.InvoicingConfig',
 
 ]
 

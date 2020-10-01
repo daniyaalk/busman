@@ -1,5 +1,6 @@
 from django.db import models
-from django.core.exceptions import ValidationError
+from decimal import Decimal
+import operator
 from organization.models import Organization
 
 # Create your models here.
@@ -18,5 +19,3 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.brand} / {self.name} / Rs. {self.minimum_price}-{self.sale_price} / {self.stock} Remaining"
-
-

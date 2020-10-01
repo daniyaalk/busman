@@ -14,18 +14,18 @@
                     Create Invoice
                     {% endif %}
                 </h5>
-
                 <form action="" method="POST">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-md-6">{{ form.customer_name|as_crispy_field}}</div>
+                        <div class="col-md-8">{{ form.name|as_crispy_field}}</div>
                         <div class="col-md-4">{{ form.date|as_crispy_field}}</div>
-                        <div class="col-md-2">{{ form.discount|as_crispy_field}}</div>
                     </div>
                     {% if object%}
-                    <input type="submit" value="Update" class="btn btn-primary"><a href="javascript:history.back()" class="btn btn-secondary ml-2">Back</a>
+                    <input type="submit" value="Update" class="btn btn-primary"><a href="javascript:history.back()"
+                        class="btn btn-secondary ml-2">Back</a>
                     {% else %}
-                    <input type="submit" value="Add" class="btn btn-primary"><a href="javascript:history.back()" class="btn btn-secondary ml-2">Back</a>
+                    <input type="submit" value="Add" class="btn btn-primary"><a href="javascript:history.back()"
+                        class="btn btn-secondary ml-2">Back</a>
                     {% endif%}
                 </form>
             </div>

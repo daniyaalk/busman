@@ -1,23 +1,16 @@
 from django import forms
-from django.core.exceptions import ValidationError
-from django.utils import timezone
-from .models import Invoice, InvoiceEntry
+from .models import SalesInvoice, SalesInvoiceEntry
+from invoicing.forms import InvoiceForm
 
-class InvoiceForm(forms.ModelForm):
-
-    date = forms.DateTimeField(widget=forms.TextInput(attrs={
-        'type': 'date',
-        'value': timezone.now().strftime("%Y-%m-%d")
-    }))
-
-    class Meta:
-        model = Invoice
-        exclude = ['organization', 'finalized']
+class SalesInvoiceForm(InvoiceForm):
+    class Meta(InvoiceForm.Meta):
+        model = SalesInvoice
         labels = {
             'discount': 'Discount %'
         }
 
-class InvoiceEntryForm(forms.ModelForm):
+
+class SalesInvoiceEntryForm(forms.ModelForm):
 
     discount = forms.DecimalField(max_digits=12, decimal_places=2, initial=0)
 
@@ -37,5 +30,5 @@ class InvoiceEntryForm(forms.ModelForm):
             self.add_error('discount', 'Discount too high!')
 
     class Meta:
-        model = InvoiceEntry
+        model = SalesInvoiceEntry
         exclude = ['invoice', 'price']
