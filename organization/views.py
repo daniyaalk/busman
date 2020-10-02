@@ -21,7 +21,10 @@ def dash(request):
         'organization': organization,
     }
 
-    context["sale_this_month"] = organization.invoices.filter(date__gte=datetime.today().date().replace(day=1)).aggregate(sum=Sum(F('entries__price')*F('entries__quantity')))['sum']
+    this_month = datetime.today().date().replace(day=1)
+    invoices_this_month = organization.salesinvoice.filter(
+        date__gte=this_month, finalized=True)
+    context["sale_this_month"] = invoices_this_month.aggregate(sum=Sum(F('entries__price')*F('entries__quantity')))['sum']
 
     return render(request, "organization/dash.html", context=context)
 
