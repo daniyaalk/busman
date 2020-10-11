@@ -21,7 +21,7 @@ from invoicing.views import (
 class PurchaseInvoiceListView(InvoiceListView):
     model = PurchaseInvoice
     filterset_class = PurchaseInvoiceFilter
-
+    paginate_by = 25
     template_name = "purchase/purchaseinvoice_list.html"
 
 class PurchaseInvoiceCreateView(LoginRequiredMixin, CreateView):
