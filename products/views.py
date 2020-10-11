@@ -31,7 +31,6 @@ def productlist(request):
         'page_obj': page_obj,
         'filter': productfilter
     }
-
     return render(request, "products/product_list.html", context=context)
 
 

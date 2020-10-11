@@ -19,7 +19,7 @@ from invoicing.views import (
 class SalesInvoiceListView(InvoiceListView):
     model = SalesInvoice
     filterset_class = SalesInvoiceFilter
-
+    paginate_by = 25
     template_name = "sales/salesinvoice_list.html"
 
 
