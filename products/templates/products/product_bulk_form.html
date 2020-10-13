@@ -1,5 +1,25 @@
-<form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit">
-</form>
+{% extends 'home/base.html' %}
+{% load crispy_forms_tags %}
+{% block content%}
+<div class="gray-bg pt-3 pb-3">
+    <div class="container">
+        <div class="card">
+            <h5 class="card-header">
+                Add products from Excel
+            </h5>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="card-body">
+                    <small class="text-muted">Please enter the corresponding column names for the following fields(Case
+                        sensitive).</small>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                </div>
+                <div class="card-footer">
+                    <input type="submit" value="Upload" class="btn btn-primary"> <a href="{% url 'products-list' %}"
+                        class="btn btn-secondary ml-3">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
