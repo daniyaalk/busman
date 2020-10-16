@@ -48,3 +48,6 @@ class OrganizationCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView
     
     def test_func(self):
         return not self.request.user.info.has_organization()
+
+def organization_settings(request):
+    pass
