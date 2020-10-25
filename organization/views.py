@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, FormView
+from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import (LoginRequiredMixin, UserPassesTestMixin)
 from django.contrib.auth.decorators import login_required
@@ -69,3 +69,10 @@ class OrganizationRequestFormView(FormView):
 
         messages.success(self.request, 'Your request was sent successfully.')
         return super().form_valid(form)
+
+class OrganizationRequestListView(ListView):
+    model = Request
+    template_name = 'organization/requests.html'
+
+    def get_object(self):
+        return self.request.user.organization.join_requests

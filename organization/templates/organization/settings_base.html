@@ -4,10 +4,12 @@
     <div class="row mt-3">
         <div class="col-md-3 mb-3">
             <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action">Organization Settings</a>
-                <a href="" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <a href="{% url 'org-settings' %}" class="list-group-item list-group-item-action">Organization Settings</a>
+                <a href="{% url 'org-requests' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                     Pending Requests
-                    
+                    {% if request.user.organization.join_requests %}
+                        <span class="badge badge-primary badge-pill">{{ request.user.organization.join_requests.count }}</span>
+                    {% endif %}
                 </a>
                 <a href="" class="list-group-item list-group-item-action">Members</a>
             </div>

@@ -7,5 +7,6 @@ urlpatterns = [
     path('create/', views.OrganizationCreateView.as_view(), name='org-create'),
     path('join/', views.OrganizationRequestFormView.as_view(), name='org-join'),
     path('settings/', views.OrganizationUpdateView.as_view(), name='org-settings'),
+    path('requests/', views.OrganizationRequestListView.as_view(), name='org-requests'),
 
 ]
