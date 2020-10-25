@@ -5,7 +5,7 @@ from organization.models import Organization
 # Create your models here.
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='info')
-    organization = models.OneToOneField(Organization, on_delete=models.SET_NULL, blank=True, null=True)
+    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, blank=True, null=True)
 
     def has_organization(self):
         if self.organization == None:

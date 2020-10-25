@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.http import HttpResponseNotAllowed
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import (LoginRequiredMixin, UserPassesTestMixin)
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 from django.db.models import Sum, F
 from .decorators import user_has_organization
@@ -76,3 +78,31 @@ class OrganizationRequestListView(ListView):
 
     def get_object(self):
         return self.request.user.organization.join_requests
+
+@login_required
+@csrf_protect
+def request_action(request):
+
+    # request = HTTP Request
+    # join_request = Join Request (.models.Request)
+    #
+
+    if request.method == 'POST':
+        join_request = Request.objects.get(pk=request.POST['id'])
+        
+        if join_request.organization == request.user.organization:
+            
+            try:
+                if request.POST['action'] == 'Accept':
+                    join_request.user.info.organization=join_request.organization
+                    join_request.user.info.save()
+            except Exception as e:
+                print(e)
+                messages.error(request, "There was an error, please try again later.")
+            else:
+                join_request.delete()
+            
+            return redirect('org-requests')
+
+        else:
+            return HttpResponseNotAllowed

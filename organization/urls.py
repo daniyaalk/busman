@@ -8,5 +8,6 @@ urlpatterns = [
     path('join/', views.OrganizationRequestFormView.as_view(), name='org-join'),
     path('settings/', views.OrganizationUpdateView.as_view(), name='org-settings'),
     path('requests/', views.OrganizationRequestListView.as_view(), name='org-requests'),
+    path('requests/action', views.request_action, name='org-requests-action'),
 
 ]
