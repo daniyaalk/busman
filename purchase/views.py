@@ -29,7 +29,7 @@ class PurchaseInvoiceCreateView(LoginRequiredMixin, CreateView):
     form_class = PurchaseInvoiceForm
 
     def form_valid(self, form):
-        form.instance.organization = self.request.user.organization
+        form.instance.organization = self.request.user.info.organization
         return super().form_valid(form)
 
 class PurchaseInvoiceDetailView(InvoiceDetailView):

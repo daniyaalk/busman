@@ -18,7 +18,7 @@ class CategoryAutocomplete(APIView):
 
     def get(self, request, format=None):
         term = request.GET['term']
-        response = set(Product.objects.filter(organization=request.user.organization,
+        response = set(Product.objects.filter(organization=request.user.info.organization,
                                               category__icontains=term).values_list('category', flat=True).distinct())
         return Response(response)
 
@@ -28,7 +28,7 @@ class NameAutocomplete(APIView):
 
     def get(self, request, format=None):
         term = request.GET['term']
-        response = set(Product.objects.filter(organization=request.user.organization,
+        response = set(Product.objects.filter(organization=request.user.info.organization,
                                             name__icontains=term).values_list('name', flat=True).distinct())
         return Response(response)
 
@@ -39,6 +39,6 @@ class BrandAutocomplete(APIView):
 
     def get(self, request, format=None):
         term = request.GET['term']
-        response = set(Product.objects.filter(organization=request.user.organization,
+        response = set(Product.objects.filter(organization=request.user.info.organization,
                                               name__icontains=term).values_list('brand', flat=True).distinct())
         return Response(response)

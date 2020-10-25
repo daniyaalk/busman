@@ -18,7 +18,7 @@ import pandas as pd
 @login_required
 def productlist(request):
 
-    organization = request.user.organization
+    organization = request.user.info.organization
     products = Product.objects.filter(organization=organization).order_by("-id").annotate(earmarked=Sum(
         'salesinvoiceentry__quantity', filter=Q(salesinvoiceentry__invoice__finalized=0)))
     productfilter = ProductFilter(request.GET, queryset=products)
@@ -40,7 +40,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     form_class = ProductForm
 
     def get_context_data(self, **kwargs):
-        organization = self.request.user.organization
+        organization = self.request.user.info.organization
         context = super().get_context_data(**kwargs)
         context['recent'] = Product.objects.filter(
             organization=organization).order_by("-id")[:5]
@@ -48,7 +48,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
-            form.instance.organization = self.request.user.organization
+            form.instance.organization = self.request.user.info.organization
             return super().form_valid(form)
 
 
@@ -58,7 +58,7 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     success_url = reverse_lazy('products-list')
 
     def test_func(self):
-        return self.request.user.organization == self.get_object().organization
+        return self.request.user.info.organization == self.get_object().organization
 
 
 class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -66,7 +66,7 @@ class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy('products-list')
 
     def test_func(self):
-        return self.request.user.organization == self.get_object().organization
+        return self.request.user.info.organization == self.get_object().organization
 
     def delete(self, request, *args, **kwargs):
         messages.add_message(request, messages.INFO,
@@ -115,7 +115,7 @@ class ProductBulkAddView(LoginRequiredMixin, FormView):
                             unit=product[model_equiv['unit']],
                             category=product[model_equiv['category']],
                             stock=product[model_equiv['stock']],
-                            organization=self.request.user.organization
+                            organization=self.request.user.info.organization
                             
                         ).save()
                     except Exception as e:

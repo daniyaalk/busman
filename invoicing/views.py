@@ -29,7 +29,7 @@ class InvoiceCreateView(LoginRequiredMixin, CreateView):
     model = None
 
     def form_valid(self, form):
-        form.instance.organization = self.request.user.organization
+        form.instance.organization = self.request.user.info.organization
         return super().form_valid(form)
 
 
@@ -37,13 +37,13 @@ class InvoiceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = None
 
     def form_valid(self, form):
-        form.instance.organization = self.request.user.organization
+        form.instance.organization = self.request.user.info.organization
         return super().form_valid(form)
 
     def test_func(self):
         invoice = self.get_object()
         # Don't let the user edit if invoice is finalized
-        return invoice.organization == self.request.user.organization and not invoice.finalized
+        return invoice.organization == self.request.user.info.organization and not invoice.finalized
 
 
 class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -58,7 +58,7 @@ class InvoiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
     def test_func(self):
         invoice = self.get_object()
-        return invoice.organization == self.request.user.organization
+        return invoice.organization == self.request.user.info.organization
 
 
 class InvoiceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -67,7 +67,7 @@ class InvoiceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         invoice = self.get_object()
         # Don't let the user edit if invoice is finalized
-        return invoice.organization == self.request.user.organization
+        return invoice.organization == self.request.user.info.organization
 
 
 class InvoiceEntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -94,7 +94,7 @@ class InvoiceEntryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView
         self.invoice = get_object_or_404(
             self.parent_model, pk=self.kwargs.get("pk"))
         # Don't let the user edit if invoice is finalized
-        return self.invoice.organization == self.request.user.organization and not self.invoice.finalized
+        return self.invoice.organization == self.request.user.info.organization and not self.invoice.finalized
 
 
 class InvoiceEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -107,4 +107,4 @@ class InvoiceEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView
     def test_func(self):
         self.invoice = self.get_object().invoice
         # Don't let the user edit if invoice is finalized
-        return self.invoice.organization == self.request.user.organization and not self.invoice.finalized
+        return self.invoice.organization == self.request.user.info.organization and not self.invoice.finalized

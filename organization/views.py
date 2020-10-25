@@ -18,7 +18,7 @@ from .forms import OrganizationJoinRequestForm
 @user_has_organization(True)
 def dash(request):
 
-    organization = request.user.organization
+    organization = request.user.info.organization
     
     context = {
         'title': 'Dashboard',
@@ -58,7 +58,7 @@ class OrganizationUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['name']
     success_url = reverse_lazy('org-settings')
     def get_object(self, queryset=None):
-        return self.request.user.organization
+        return self.request.user.info.organization
 
 class OrganizationRequestFormView(FormView):
     form_class = OrganizationJoinRequestForm
@@ -77,7 +77,7 @@ class OrganizationRequestListView(ListView):
     template_name = 'organization/requests.html'
 
     def get_object(self):
-        return self.request.user.organization.join_requests
+        return self.request.user.info.organization.join_requests
 
 @login_required
 @csrf_protect
@@ -90,7 +90,7 @@ def request_action(request):
     if request.method == 'POST':
         join_request = Request.objects.get(pk=request.POST['id'])
         
-        if join_request.organization == request.user.organization:
+        if join_request.organization == request.user.info.organization:
             
             try:
                 if request.POST['action'] == 'Accept':
