@@ -33,18 +33,20 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="nav navbar-nav ml-auto">
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'org-dash' %}">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'products-list' %}">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'sales-list' %}">Sales</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'purchase-list' %}">Purchase</a>
-                </li>
+                    {% if user.organiztion %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'org-dash' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'products-list' %}">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'sales-list' %}">Sales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'purchase-list' %}">Purchase</a>
+                    </li>
+                    {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'users-logout' %}">Logout</a>
                 </li>

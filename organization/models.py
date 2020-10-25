@@ -10,8 +10,8 @@ class Organization(models.Model):
         return f"{self.name}"
 
 class Request(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='join_request')
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='join_requests')
 
     def __str__(self):
         return f"{self.user} to {self.organization}"

@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import (LoginRequiredMixin, UserPassesTestMixin)
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from datetime import datetime
 from django.db.models import Sum, F
 from .decorators import user_has_organization
-from .models import Organization
+from .models import Organization, Request
+from .forms import OrganizationJoinRequestForm
 
 # Create your views here.
 @login_required
@@ -51,3 +53,20 @@ class OrganizationCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView
 
 def organization_settings(request):
     pass
+
+@login_required
+@user_has_organization(False)
+def join_organization(request):
+    return render(request, "organization/join.html")
+
+class OrganizationRequestFormView(FormView):
+    form_class = OrganizationJoinRequestForm
+    template_name = "organization/join.html"
+    success_url = reverse_lazy('org-join')
+
+    def form_valid(self, form):
+        organization = Organization.objects.get(pk=form.cleaned_data["id"])
+        obj, created = Request.objects.update_or_create(user=self.request.user, organization=organization)
+
+        messages.success(self.request, 'Your request was sent successfully.')
+        return super().form_valid(form)
