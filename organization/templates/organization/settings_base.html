@@ -1,0 +1,21 @@
+{% extends 'home/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-3 mb-3">
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action">Organization Settings</a>
+                <a href="" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Pending Requests
+                    
+                </a>
+                <a href="" class="list-group-item list-group-item-action">Members</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            {% block settings%}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

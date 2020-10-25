@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, UpdateView, FormView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import (LoginRequiredMixin, UserPassesTestMixin)
 from django.contrib.auth.decorators import login_required
@@ -51,13 +51,12 @@ class OrganizationCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView
     def test_func(self):
         return not self.request.user.info.has_organization()
 
-def organization_settings(request):
-    pass
-
-@login_required
-@user_has_organization(False)
-def join_organization(request):
-    return render(request, "organization/join.html")
+class OrganizationUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'organization/organization_edit.html'
+    fields = ['name']
+    success_url = reverse_lazy('org-settings')
+    def get_object(self, queryset=None):
+        return self.request.user.organization
 
 class OrganizationRequestFormView(FormView):
     form_class = OrganizationJoinRequestForm

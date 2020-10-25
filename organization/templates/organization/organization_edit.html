@@ -1,0 +1,10 @@
+{% extends 'organization/settings_base.html' %}
+{% load crispy_forms_tags %}
+{% block settings %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Save" class="btn btn-primary">
+        <a href="." class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}
