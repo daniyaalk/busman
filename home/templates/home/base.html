@@ -33,7 +33,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="nav navbar-nav ml-auto">
                 {% if user.is_authenticated %}
-                    {% if user.organiztion %}
+                    {% if user.organization %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'org-dash' %}">Dashboard</a>
                     </li>
