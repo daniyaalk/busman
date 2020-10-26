@@ -74,12 +74,13 @@ class OrganizationRequestFormView(FormView):
 
 class OrganizationRequestListView(ListView):
     model = Request
-    template_name = 'organization/requests.html'
+    #template_name = 'organization/requests.html'
 
     def get_object(self):
         return self.request.user.info.organization.join_requests
 
 @login_required
+@user_has_organization(False)
 @csrf_protect
 def request_action(request):
 
@@ -106,3 +107,11 @@ def request_action(request):
 
         else:
             return HttpResponseNotAllowed
+
+
+class MembersListView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'organization/member_list.html'
+
+    def get_queryset(self):
+        return User.objects.filter(info__organization=self.request.user.organization)

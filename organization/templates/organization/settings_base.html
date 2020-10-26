@@ -11,7 +11,7 @@
                         <span class="badge badge-primary badge-pill">{{ request.user.info.organization.join_requests.count }}</span>
                     {% endif %}
                 </a>
-                <a href="" class="list-group-item list-group-item-action">Members</a>
+                <a href="{% url 'org-members' %}" class="list-group-item list-group-item-action">Members</a>
             </div>
         </div>
         <div class="col-md-9">

@@ -1,0 +1,16 @@
+{% extends 'organization/settings_base.html' %}
+{% load crispy_forms_tags %}
+{% block settings %}
+
+<ul class="list-group">
+    {% for member in object_list %}
+    <li class="list-group-item">
+        {{ member.username }}
+    </li>
+    {% empty %}
+    <li class="list-group-item">No members</li>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}
