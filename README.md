@@ -17,4 +17,4 @@ Busman is a lightweight Django ERP application
 * PDF Invoice generation.
 * Derived porduct details like average cost, sale count etc.
 * Dashboard graphs for analysis.
-* More granular customer details.=5
+* More granular customer details.

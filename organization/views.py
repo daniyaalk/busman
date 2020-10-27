@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotAllowed
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView, FormView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import (LoginRequiredMixin, UserPassesTestMixin)
 from django.contrib import messages
@@ -115,3 +115,11 @@ class MembersListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return User.objects.filter(info__organization=self.request.user.organization)
+
+class MemberDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = User
+    template_name = 'organization/user_detail.html'
+    def test_func(self):
+        instance = self.get_object()
+        # Verify if requesting user is the owneer of organization in question
+        return self.request.user.organization == instance.info.organization 
