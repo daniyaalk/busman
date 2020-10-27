@@ -5,7 +5,7 @@
 <ul class="list-group">
     {% for member in object_list %}
     <li class="list-group-item">
-        <a href="{% url 'org-member-detail' member.pk %}">{{ member.username }}</a>
+        <a href="{% url 'org-member-permissions' member.pk %}">{{ member.username }}</a>
     </li>
     {% empty %}
     <li class="list-group-item">No members</li>

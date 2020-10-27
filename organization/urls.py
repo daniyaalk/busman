@@ -10,7 +10,7 @@ urlpatterns = [
     path('requests/', views.OrganizationRequestListView.as_view(), name='org-requests'),
     path('requests/action', views.request_action, name='org-requests-action'),
     path('members/', views.MembersListView.as_view(), name='org-members'),
-    path('member/<int:pk>', views.MemberDetailView.as_view(), name='org-member-detail'),
+    path('member/<int:pk>', views.MemberPermissionsFormView.as_view(), name='org-member-permissions'),
 
 
 

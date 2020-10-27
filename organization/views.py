@@ -9,9 +9,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 from django.db.models import Sum, F
+from users.models import Permissions
 from .decorators import user_has_organization
 from .models import Organization, Request
-from .forms import OrganizationJoinRequestForm
+from .forms import OrganizationJoinRequestForm, PermissionsForm
 
 # Create your views here.
 @login_required
@@ -116,10 +117,39 @@ class MembersListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return User.objects.filter(info__organization=self.request.user.organization)
 
-class MemberDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    model = User
+class MemberPermissionsFormView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     template_name = 'organization/user_detail.html'
+
+    def get_form(self):
+
+        #If no record of permissions is present, initiate with defaults
+        if hasattr(self.user_instance, 'permissions'):
+            current_permissions = self.user_instance.permissions
+        else:
+            current_permissions = Permissions(user=self.user_instance)
+
+        if self.request.method == 'POST':
+            return PermissionsForm(self.request.POST, instance=current_permissions)
+        else:
+            return PermissionsForm(instance=current_permissions)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['object'] = self.user_instance
+        return context
+    
+    def form_valid(self, form):
+        form.user = self.user_instance
+        form.save()
+        messages.success(self.request, 'Permissions were updated!')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('org-member-permissions', kwargs={'pk':self.kwargs['pk']})
+
     def test_func(self):
-        instance = self.get_object()
+        self.user_instance = get_object_or_404(User, id=self.kwargs['pk'])
         # Verify if requesting user is the owneer of organization in question
-        return self.request.user.organization == instance.info.organization 
+        return self.request.user.organization == self.user_instance.info.organization 
+
+# Note for later: When removing a user from Org, clear permissions as well

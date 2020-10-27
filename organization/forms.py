@@ -2,6 +2,7 @@ from django import forms
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from .models import  Organization, Request
+from users.models import Permissions
 
 class OrganizationJoinRequestForm(forms.Form):
 
@@ -17,3 +18,9 @@ class OrganizationJoinRequestForm(forms.Form):
                 raise
         except:
             raise ValidationError("Invalid organization code.")
+
+
+class PermissionsForm(forms.ModelForm):
+    class Meta:
+        model = Permissions
+        exclude = ('user',)
