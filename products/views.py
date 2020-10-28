@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from django.core.paginator import Paginator
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from users.mixins import PermissionsHandlerMixin
 from django.db.models import Q, Sum
 from django.db import transaction, IntegrityError
 from organization.models import Organization
@@ -17,6 +19,9 @@ import pandas as pd
 
 @login_required
 def productlist(request):
+
+    if request.user.permissions.dashboard_permissions < 1:
+        return HttpResponseForbidden()
 
     organization = request.user.info.organization
     products = Product.objects.filter(organization=organization).order_by("-id").annotate(earmarked=Sum(
@@ -34,7 +39,9 @@ def productlist(request):
     return render(request, "products/product_list.html", context=context)
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionsHandlerMixin, CreateView):
+    permissions_required = ['product_permissions',]
+    permissions_level =    [2]
     model = Product
     success_url = reverse_lazy('products-add')
     form_class = ProductForm
@@ -52,7 +59,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             return super().form_valid(form)
 
 
-class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, PermissionsHandlerMixin, UpdateView):
+    permissions_required = ['product_permissions', ]
+    permissions_level = [2]
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('products-list')
@@ -61,7 +70,9 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return self.request.user.info.organization == self.get_object().organization
 
 
-class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, PermissionsHandlerMixin, DeleteView):
+    permissions_required = ['product_permissions', ]
+    permissions_level = [3]
     model = Product
     success_url = reverse_lazy('products-list')
 
@@ -73,7 +84,10 @@ class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
                              "The product was deleted successfully")
         return super().delete(request, *args, **kwargs)
 
-class ProductBulkAddView(LoginRequiredMixin, FormView):
+
+class ProductBulkAddView(LoginRequiredMixin, PermissionsHandlerMixin, FormView):
+    permissions_required = ['product_permissions', ]
+    permissions_level =    [2]
     form_class = BulkAdd
     template_name = 'products/product_bulk_form.html'
     success_url = reverse_lazy('products-list')
