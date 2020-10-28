@@ -20,10 +20,14 @@ import pandas as pd
 @login_required
 def productlist(request):
 
-    if request.user.permissions.dashboard_permissions < 1:
-        return HttpResponseForbidden()
-
     organization = request.user.info.organization
+    
+    if not hasattr(request.user, 'organization'):
+        if not hasattr(request.user, 'permissions'):
+            return HttpResponseForbidden()    
+        if request.user.permissions.dashboard_permissions < 1:
+            return HttpResponseForbidden()
+
     products = Product.objects.filter(organization=organization).order_by("-id").annotate(earmarked=Sum(
         'salesinvoiceentry__quantity', filter=Q(salesinvoiceentry__invoice__finalized=0)))
     productfilter = ProductFilter(request.GET, queryset=products)
