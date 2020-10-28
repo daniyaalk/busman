@@ -60,44 +60,7 @@
                         {% endfor %}
                     </table>
                 </div>
-                <div class="pagination d-flex flex-column">
-                    {% if is_paginated %}
-
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            {% if page_obj.has_previous %}
-                            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
-                            <li class="page-item"><a class="page-link"
-                                    href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
-                            {% else %}
-                            <li class="page-item disabled"><a class="page-link" href="#">First</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                            {% endif %}
-
-                            {% for num in page_obj.paginator.page_range %}
-                            {% if page_obj.number == num %}
-                            <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }} of
-                                    {{ page_obj.paginator.num_pages }}</a></li>
-                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                            {% endif %}
-                            {% endfor %}
-
-                            {% if page_obj.has_next %}
-                            <li class="page-item"><a class="page-link"
-                                    href="?page={{ page_obj.next_page_number }}">Next</a></li>
-                            <li class="page-item"><a class="page-link"
-                                    href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
-                            {% else %}
-                            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#">Last</a></li>
-                            {% endif %}
-
-                        </ul>
-                    </nav>
-
-                    {% endif %}
-                </div>
+                {% include 'organization/partials/pagination.html' %}
 
             </div>
         </div>
@@ -108,20 +71,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
     integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
     crossorigin="anonymous"></script>
-<script>
-    $(function () {
-        $("#id_category").autocomplete({
-            source: '{% url "api-categories" %}',
-            minLength: 1
-        })
-        $("#id_name").autocomplete({
-            source: '{% url "api-names" %}',
-            minLength: 1
-        })
-        $("#id_brand").autocomplete({
-            source: '{% url "api-brands" %}',
-            minLength: 1
-        })
-    })
-</script>
 {% endblock %}
