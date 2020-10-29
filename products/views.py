@@ -25,7 +25,7 @@ def productlist(request):
     if not hasattr(request.user, 'organization'):
         if not hasattr(request.user, 'permissions'):
             return HttpResponseForbidden()    
-        if request.user.permissions.dashboard_permissions < 1:
+        if request.user.permissions.product_permissions < 1:
             return HttpResponseForbidden()
 
     products = Product.objects.filter(organization=organization).order_by("-id").annotate(earmarked=Sum(

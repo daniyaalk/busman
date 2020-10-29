@@ -103,9 +103,13 @@ def request_action(request):
                 messages.error(request, "There was an error, please try again later.")
                 return redirect('org-requests')
             else:
-                # join_request.delete()
-                print(join_request.user.pk)
-                return redirect('org-member-permissions', pk=join_request.user.pk)
+                join_request.delete()
+                
+                if request.POST['action'] == 'Accept':
+                    return redirect('org-member-permissions', pk=join_request.user.pk)
+                else:
+                    return redirect('org-requests')
+
             
 
         else:
