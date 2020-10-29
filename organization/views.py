@@ -82,7 +82,6 @@ class OrganizationRequestListView(ListView):
         return self.request.user.info.organization.join_requests
 
 @login_required
-@user_has_organization(False)
 @csrf_protect
 def request_action(request):
 
@@ -93,7 +92,7 @@ def request_action(request):
     if request.method == 'POST':
         join_request = Request.objects.get(pk=request.POST['id'])
         
-        if join_request.organization == request.user.info.organization:
+        if join_request.organization == request.user.organization:
             
             try:
                 if request.POST['action'] == 'Accept':
@@ -154,9 +153,9 @@ class MemberPermissionsFormView(LoginRequiredMixin, UserPassesTestMixin, FormVie
         # Verify if requesting user is the owneer of organization in question
         return self.request.user.organization == self.user_instance.info.organization 
 
-class MemberDeleteFormView(FormView):
+class MemberDeleteFormView(LoginRequiredMixin, FormView):
     form_class = MemberDeleteForm
-    success_url = reversed('org-members')
+    success_url = reverse_lazy('org-members')
 
     def form_valid(self, form):
         user_id = form.cleaned_data['user']
