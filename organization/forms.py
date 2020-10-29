@@ -24,3 +24,7 @@ class PermissionsForm(forms.ModelForm):
     class Meta:
         model = Permissions
         exclude = ('user',)
+
+class MemberDeleteForm(forms.Form):
+
+    user = forms.IntegerField(widget=forms.HiddenInput)

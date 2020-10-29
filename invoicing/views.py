@@ -3,13 +3,24 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from django_filters.views import object_filter
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
+from users.mixins import PermissionsHandlerMixin
+
 """This file contains the abstract views for Invoicing"""
 
 
-class InvoiceListView(ListView):
+class InvoiceListView(PermissionsHandlerMixin, ListView):
     model = None
     filterset_class = None
     paginate_by = 25
+
+    def __init__(self):
+        self.permissions_required = [self.__class__.__name__ ]
+        if self.__class__.__name__ == 'SalesInvoiceListView':
+            self.permissions_required = ['sales_permissions']
+        if self.__class__.__name__ == 'PurchaseInvoiceListView':
+            self.permissions_required = ['purchase_permissions']
+        
+        self.permissions_level = [1]
 
     def get_queryset(self):
 

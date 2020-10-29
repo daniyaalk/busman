@@ -11,6 +11,9 @@ urlpatterns = [
     path('requests/action', views.request_action, name='org-requests-action'),
     path('members/', views.MembersListView.as_view(), name='org-members'),
     path('member/<int:pk>', views.MemberPermissionsFormView.as_view(), name='org-member-permissions'),
+    path('member/delete', views.MemberDeleteFormView.as_view(),
+         name='org-member-delete'),
+
 
 
 

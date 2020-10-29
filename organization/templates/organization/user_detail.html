@@ -5,6 +5,7 @@
 <h3>
     {{ object.username }}
 </h3>
+{% if not object.organization %}
 <p class="border-top">
     <h4>Permissions</h4>
     <form action="" method="post">
@@ -13,4 +14,37 @@
         <input type="submit" value="Update Permissions" class="btn btn-primary">
     </form>
 </p>
+<div class="card border-danger" >
+    <h4 class="card-header text-danger">Remove User</h4>
+    <div class="card-body">
+        <form action="{% url 'org-member-delete' %}" id="delete_form" method="POST">
+            {% csrf_token %}
+            {{ delete_form }}
+            <a href="#" id="delete_form_button" class="btn btn-danger">Remove User from Organization</a>
+        </form>
+    </div>
+</div>
+{% else %}
+<p class="border-top">
+This user is the owner of the organization. You can modify organization settings <a href="{% url 'org-settings' %}">here</a>.
+</p>
+{% endif %}
+{% endblock %}
+{% block extras %}
+<script>
+    $(function () {
+        default_text = ""
+        $('#delete_form_button').on('click', function(){
+            confirm_username = prompt('Type the username "{{ object.username }}" to confirm.', default_text)
+
+            if(confirm_username=='{{ object.username }}'){
+                console.log('here')
+                $("#delete_form").submit();
+            }else{
+                alert('Mismatched username(case sensitive)');
+                default_text = confirm_username;
+            }
+        })
+    });
+</script>
 {% endblock %}

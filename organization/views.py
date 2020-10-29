@@ -9,10 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 from django.db.models import Sum, F
-from users.models import Permissions
+from django.db import transaction
+from users.models import UserInfo, Permissions
 from .decorators import user_has_organization
 from .models import Organization, Request
-from .forms import OrganizationJoinRequestForm, PermissionsForm
+from .forms import OrganizationJoinRequestForm, PermissionsForm, MemberDeleteForm
 
 # Create your views here.
 @login_required
@@ -136,6 +137,7 @@ class MemberPermissionsFormView(LoginRequiredMixin, UserPassesTestMixin, FormVie
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['object'] = self.user_instance
+        context['delete_form'] = MemberDeleteForm(initial={'user': self.user_instance.id})
         return context
     
     def form_valid(self, form):
@@ -152,4 +154,22 @@ class MemberPermissionsFormView(LoginRequiredMixin, UserPassesTestMixin, FormVie
         # Verify if requesting user is the owneer of organization in question
         return self.request.user.organization == self.user_instance.info.organization 
 
-# Note for later: When removing a user from Org, clear permissions as well
+class MemberDeleteFormView(FormView):
+    form_class = MemberDeleteForm
+    success_url = reversed('org-members')
+
+    def form_valid(self, form):
+        user_id = form.cleaned_data['user']
+        
+        try:
+            with transaction.atomic():
+                UserInfo.objects.filter(user=user_id).update(organization=None)
+                Permissions.objects.filter(user=user_id).delete()
+        except:
+            messages.error(self.request, "There was an error removing the user, please try again later.")
+        else:
+            messages.success(self.request, "User was removed from your organization.")
+        
+        return super().form_valid(form)
+
+        

@@ -4,7 +4,7 @@ from .models import Permissions
 class PermissionsHandlerMixin:
 
     def dispatch(self, request, *args, **kwargs):
-
+        print(self.permissions_required)
         #Skip tests if user is the owner
         if hasattr(self.request.user, 'organization'):
             return super().dispatch(request, *args, **kwargs)
@@ -19,4 +19,3 @@ class PermissionsHandlerMixin:
                         raise PermissionDenied
 
         return super().dispatch(request, *args, **kwargs)
-
