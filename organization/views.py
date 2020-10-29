@@ -101,10 +101,12 @@ def request_action(request):
             except Exception as e:
                 print(e)
                 messages.error(request, "There was an error, please try again later.")
+                return redirect('org-requests')
             else:
-                join_request.delete()
+                # join_request.delete()
+                print(join_request.user.pk)
+                return redirect('org-member-permissions', pk=join_request.user.pk)
             
-            return redirect('org-requests')
 
         else:
             return HttpResponseNotAllowed
