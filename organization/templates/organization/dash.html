@@ -1,6 +1,7 @@
 {% extends 'home/base.html' %}
 {% load humanize %}
 {% block content %}
+{% if request.user.permissions.dashboard_permissions > 0 or request.user.organization %}
 <div class="container">
     <div class="row mt-3">
         <div class="col">
@@ -43,4 +44,32 @@
         </div>
     </div>
 </div>
+{% else %}
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">Hello, {{ request.user }}!</h1>
+        {% if not request.user.permissions or request.user.permissions.no_permissions %}
+            Looks like you do not have any permissions assigned yet, please contact the organization administrator.
+        {% else %}
+            <ul class="nav nav-pills nav-fill dash-nav">
+                {% if user.permissions.product_permissions > 0 %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'products-list' %}">Products</a>
+                </li>
+                {% endif %}
+                {% if user.permissions.sales_permissions > 0 %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'sales-list' %}">Sales</a>
+                </li>
+                {% endif %}
+                {% if user.permissions.purchase_permissions > 0 %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'purchase-list' %}">Purchase</a>
+                </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
 {% endblock %}

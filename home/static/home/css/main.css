@@ -4,3 +4,6 @@ body{
 .gray-bg{
     background-color: #d3d3d3;
 }
+.dash-nav > li{
+    margin: 1em;
+}

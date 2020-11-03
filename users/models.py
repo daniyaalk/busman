@@ -38,3 +38,8 @@ class Permissions(models.Model):
         choices=editables_choices, default=0)
     purchase_permissions = models.SmallIntegerField(
         choices=editables_choices, default=0)
+
+
+    @property
+    def no_permissions(self):
+        return self.dashboard_permissions == 0 and self.product_permissions == 0 and self.sales_permissions == 0 and self.purchase_permissions == 0

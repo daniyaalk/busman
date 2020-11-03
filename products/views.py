@@ -24,9 +24,9 @@ def productlist(request):
     
     if not hasattr(request.user, 'organization'):
         if not hasattr(request.user, 'permissions'):
-            return HttpResponseForbidden()    
+            return HttpResponseForbidden("<h1>403 Forbidden</h1>")    
         if request.user.permissions.product_permissions < 1:
-            return HttpResponseForbidden()
+            return HttpResponseForbidden("<h1>403 Forbidden</h1>")
 
     products = Product.objects.filter(organization=organization).order_by("-id").annotate(earmarked=Sum(
         'salesinvoiceentry__quantity', filter=Q(salesinvoiceentry__invoice__finalized=0)))

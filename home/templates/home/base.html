@@ -34,18 +34,26 @@
             <ul class="nav navbar-nav ml-auto">
                 {% if user.is_authenticated %}
                     {% if user.info.organization %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'org-dash' %}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'products-list' %}">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'sales-list' %}">Sales</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'purchase-list' %}">Purchase</a>
-                    </li>
+                        {% if user.permissions.dashboard_permissions > 0 %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'org-dash' %}">Dashboard</a>
+                        </li>
+                        {% endif %}
+                        {% if user.permissions.product_permissions > 0 %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'products-list' %}">Products</a>
+                        </li>
+                        {% endif %}
+                        {% if user.permissions.sales_permissions > 0 %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'sales-list' %}">Sales</a>
+                        </li>
+                        {% endif %}
+                        {% if user.permissions.purchase_permissions > 0 %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'purchase-list' %}">Purchase</a>
+                        </li>
+                        {% endif %}
                     {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'users-logout' %}">Logout</a>
