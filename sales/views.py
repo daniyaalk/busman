@@ -48,3 +48,7 @@ class SalesInvoiceEntryCreateView(InvoiceEntryCreateView):
 
 class SalesInvoiceEntryDeleteView(InvoiceEntryDeleteView):
     model = SalesInvoiceEntry
+
+class SalesInvoicePrintView(InvoiceDetailView):
+    model = SalesInvoice
+    template_name = 'sales/salesinvoice_print.html'

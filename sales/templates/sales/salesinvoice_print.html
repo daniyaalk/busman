@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reveipt for {{ object.customer }}</title>
+    <style>
+        table {
+            width: 100%; 
+            border: 1px solid;
+        }
+        td {
+            padding: 5px; 
+            border: 1px solid;
+        }
+        th {
+            border: 2px solid;
+        }
+    </style>
+</head>
+<body>
+    
+    
+    <div class="gray-bg pt-3 pb-3">
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h1>{{ object.organization.name }}</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            Customer: {{ object.name }}
+                        </div>
+                        <div class="col-md-6">
+                            Dated: {{ object.date }}
+                        </div>  
+                    </div>
+                    <hr>
+                    <h5>Products:</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Brand</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in object.entries.all %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ entry.product.brand }}</td>
+                                    <td>{{ entry.product.name|default:"Deleted product" }}</td>
+                                    <td>{{ entry.price }}</td>
+                                    <td>{{ entry.quantity }}</td>
+                                    <td>{{ entry.total_price|floatformat:2 }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center">No entries found</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <th>Gross Total</th>
+                                    <td>{{ object.gross_total|floatformat:2 }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <th>
+                                        Discount 
+                                    </th>
+                                    <td>{{ object.discount|floatformat:2 }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <th>Net Total</th>
+                                    <td>{{ object.net_total|floatformat:2 }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    window.print()
+</script>
+</html>
