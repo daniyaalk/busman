@@ -1,9 +1,9 @@
-from django.http import HttpResponseNotAllowed
+from django.shortcuts import redirect
 
-class UserHasNoGroupMixin:
+class UserHasNoOrganizationMixin:
     
     def dispatch(self, request, *args, **kwargs):
-        if request.user.groups.count() == 0:
+        if request.user.info.has_organization() == False:
             return super().dispatch(request, *args, **kwargs)
         else:
-            return HttpResponseNotAllowed("a")
+            return redirect('org-dash')

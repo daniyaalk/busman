@@ -9,11 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 from django.db.models import Sum, F
-from django.db import transaction
 from users.models import UserInfo, Permissions
 from .decorators import user_has_organization
 from .models import Organization, Request
 from .forms import OrganizationJoinRequestForm, PermissionsForm, MemberDeleteForm
+from .mixins import UserHasNoOrganizationMixin
 from .actions import delete_member
 
 # Create your views here.
@@ -44,7 +44,7 @@ def noOrgView(request):
     return render(request, "organization/no_org.html", context=context)
 
 
-class OrganizationCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class OrganizationCreateView(LoginRequiredMixin, UserHasNoOrganizationMixin, CreateView):
     model = Organization
     fields = ['name']
     success_url = reverse_lazy("org-none")
@@ -52,9 +52,6 @@ class OrganizationCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
-    
-    def test_func(self):
-        return not self.request.user.info.has_organization()
 
 class OrganizationUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'organization/organization_edit.html'
@@ -63,7 +60,8 @@ class OrganizationUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return self.request.user.info.organization
 
-class OrganizationRequestFormView(FormView):
+
+class OrganizationRequestFormView(LoginRequiredMixin, UserHasNoOrganizationMixin, FormView):
     form_class = OrganizationJoinRequestForm
     template_name = "organization/join.html"
     success_url = reverse_lazy('org-join')
@@ -75,7 +73,8 @@ class OrganizationRequestFormView(FormView):
         messages.success(self.request, 'Your request was sent successfully.')
         return super().form_valid(form)
 
-class OrganizationRequestListView(ListView):
+
+class OrganizationRequestListView(LoginRequiredMixin, ListView):
     model = Request
     #template_name = 'organization/requests.html'
 
@@ -110,9 +109,7 @@ def request_action(request):
                     return redirect('org-member-permissions', pk=join_request.user.pk)
                 else:
                     return redirect('org-requests')
-
-            
-
+                    
         else:
             return HttpResponseNotAllowed
 
