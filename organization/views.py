@@ -14,6 +14,7 @@ from users.models import UserInfo, Permissions
 from .decorators import user_has_organization
 from .models import Organization, Request
 from .forms import OrganizationJoinRequestForm, PermissionsForm, MemberDeleteForm
+from .actions import delete_member
 
 # Create your views here.
 @login_required
@@ -165,15 +166,7 @@ class MemberDeleteFormView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         user_id = form.cleaned_data['user']
-        
-        try:
-            with transaction.atomic():
-                UserInfo.objects.filter(user=user_id).update(organization=None)
-                Permissions.objects.filter(user=user_id).delete()
-        except:
-            messages.error(self.request, "There was an error removing the user, please try again later.")
-        else:
-            messages.success(self.request, "User was removed from your organization.")
+        delete_member(self.request, user_id)
         
         return super().form_valid(form)
 

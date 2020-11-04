@@ -1,16 +1,15 @@
 {% extends 'home/base.html' %}
 {% load humanize %}
 {% block content %}
+<div class="container mt-5 mb-5">
+    Organization Code: {{ organization.name|truncatechars:5|slugify }}#{{ organization.pk }}
+    {% if request.user.organization %}
+        <a href="{% url 'org-settings' %}" class="btn btn-secondary float-right ml-3">Orgnization Settings</a>
+    {% endif %}
+    <a href="#" class="btn btn-secondary float-right">Account Settings</a>
+</div>
 {% if request.user.permissions.dashboard_permissions > 0 or request.user.organization %}
 <div class="container">
-    <div class="row mt-3">
-        <div class="col">
-            Organization Code: {{ organization.name|truncatechars:5|slugify }}#{{ organization.pk }}
-        </div>
-        <div class="col">
-            <a href="{% url 'org-settings' %}" class="btn btn-secondary float-right">Orgnization Settings</a>
-        </div>
-    </div>
     <div class="row mt-3">
         <div class="col-md-4">
             <div class="card">
