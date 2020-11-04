@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpResponseNotAllowed
-from django.views.generic import CreateView, UpdateView, ListView, DetailView, DeleteView, FormView
+from django.views.generic import CreateView, UpdateView, ListView, FormView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import (LoginRequiredMixin, UserPassesTestMixin)
 from django.contrib import messages
@@ -11,9 +11,9 @@ from datetime import datetime
 from django.db.models import Sum, F
 from users.models import UserInfo, Permissions
 from .decorators import user_has_organization
+from .mixins import UserHasNoOrganizationMixin
 from .models import Organization, Request
 from .forms import OrganizationJoinRequestForm, PermissionsForm, MemberDeleteForm
-from .mixins import UserHasNoOrganizationMixin
 from .actions import delete_member
 
 # Create your views here.
