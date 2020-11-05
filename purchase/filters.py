@@ -1,6 +1,6 @@
-from .models import PurchaseInvoice as Purchase
+from .models import PurchaseInvoice
 from invoicing.filters import InvoiceFilter
 
 class PurchaseInvoiceFilter(InvoiceFilter):
     class Meta(InvoiceFilter.Meta):
-        model = Purchase
+        model = PurchaseInvoice

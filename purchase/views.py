@@ -1,9 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
-from django.core.paginator import Paginator
 from .models import PurchaseInvoice, PurchaseInvoiceEntry, PURCHASE
 from .filters import PurchaseInvoiceFilter
 from .forms import PurchaseInvoiceForm
@@ -23,13 +18,10 @@ class PurchaseInvoiceListView(InvoiceListView):
     filterset_class = PurchaseInvoiceFilter
     template_name = "purchase/purchaseinvoice_list.html"
 
-class PurchaseInvoiceCreateView(LoginRequiredMixin, CreateView):
+
+class PurchaseInvoiceCreateView(InvoiceCreateView):
     model = PurchaseInvoice
     form_class = PurchaseInvoiceForm
-
-    def form_valid(self, form):
-        form.instance.organization = self.request.user.info.organization
-        return super().form_valid(form)
 
 class PurchaseInvoiceDetailView(InvoiceDetailView):
     model = PurchaseInvoice
