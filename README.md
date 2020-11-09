@@ -13,6 +13,9 @@ Busman is a lightweight Django ERP application
 * Adding multiple members to an organization
 * Access Control Level for each member.
 
+# Screenshots
+Screenshots available on [SCREENSHOTS.md](SCREENSHOTS.md)
+
 # TODO
 * PDF Invoice generation.
 * Derived porduct details like average cost, sale count etc.
